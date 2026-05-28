@@ -1,0 +1,2409 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kendrapara — The Soul of Coastal Odisha</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Outfit:wght@200;300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ocean: #0a1628;
+    --deep: #061020;
+    --mangrove: #1a3a2a;
+    --green: #2d6a4f;
+    --green-light: #52b788;
+    --cyan: #48cae4;
+    --cyan-soft: #90e0ef;
+    --sunset: #f4845f;
+    --amber: #f7b731;
+    --sand: #e8d5b7;
+    --sand-light: #f5efe6;
+    --gold: #c9a84c;
+    --gold-light: #e8c97a;
+    --white: #f8f6f2;
+    --charcoal: #1c1c2e;
+    --glass: rgba(255,255,255,0.06);
+    --glass-border: rgba(255,255,255,0.12);
+  }
+
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; font-size: 16px; }
+
+  body {
+    background: var(--deep);
+    color: var(--white);
+    font-family: 'Outfit', sans-serif;
+    font-weight: 300;
+    overflow-x: hidden;
+    cursor: none;
+  }
+
+  /* CUSTOM CURSOR */
+  .cursor {
+    width: 12px; height: 12px;
+    background: var(--cyan);
+    border-radius: 50%;
+    position: fixed; top: 0; left: 0;
+    pointer-events: none; z-index: 9999;
+    transition: transform 0.15s ease, opacity 0.3s;
+    mix-blend-mode: screen;
+  }
+  .cursor-ring {
+    width: 40px; height: 40px;
+    border: 1px solid rgba(72,202,228,0.4);
+    border-radius: 50%;
+    position: fixed; top: 0; left: 0;
+    pointer-events: none; z-index: 9998;
+    transition: transform 0.4s cubic-bezier(0.23,1,0.32,1), opacity 0.3s;
+  }
+  .cursor.hover { transform: scale(2.5); background: var(--gold); }
+  .cursor-ring.hover { transform: scale(1.5); border-color: var(--gold); }
+
+  /* SCROLLBAR */
+  ::-webkit-scrollbar { width: 3px; }
+  ::-webkit-scrollbar-track { background: var(--deep); }
+  ::-webkit-scrollbar-thumb { background: var(--green); border-radius: 2px; }
+
+  /* NAV */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+    padding: 1.2rem 4rem;
+    display: flex; align-items: center; justify-content: space-between;
+    transition: all 0.5s ease;
+  }
+  nav.scrolled {
+    background: rgba(6,16,32,0.92);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--glass-border);
+    padding: 0.8rem 4rem;
+  }
+  .nav-logo {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.5rem; font-weight: 600;
+    letter-spacing: 0.05em;
+    color: var(--white);
+    text-decoration: none;
+  }
+  .nav-logo span { color: var(--cyan); }
+  .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+  .nav-links a {
+    color: rgba(248,246,242,0.7);
+    text-decoration: none;
+    font-size: 0.8rem;
+    font-weight: 400;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    transition: color 0.3s;
+    position: relative;
+  }
+  .nav-links a::after {
+    content: '';
+    position: absolute; bottom: -4px; left: 0; right: 0;
+    height: 1px; background: var(--cyan);
+    transform: scaleX(0); transition: transform 0.3s;
+  }
+  .nav-links a:hover { color: var(--white); }
+  .nav-links a:hover::after { transform: scaleX(1); }
+  .nav-cta {
+    background: transparent;
+    border: 1px solid var(--cyan);
+    color: var(--cyan);
+    padding: 0.55rem 1.5rem;
+    border-radius: 50px;
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.78rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    cursor: none;
+    transition: all 0.3s;
+  }
+  .nav-cta:hover { background: var(--cyan); color: var(--deep); }
+  .hamburger { display: none; flex-direction: column; gap: 5px; cursor: none; }
+  .hamburger span { width: 24px; height: 1.5px; background: var(--white); transition: all 0.3s; }
+
+  /* HERO */
+  #hero {
+    height: 100vh; min-height: 700px;
+    position: relative;
+    display: flex; align-items: center; justify-content: center;
+    overflow: hidden;
+  }
+  .hero-bg {
+    position: absolute; inset: 0;
+    background:
+      radial-gradient(ellipse at 20% 50%, rgba(45,106,79,0.35) 0%, transparent 60%),
+      radial-gradient(ellipse at 80% 20%, rgba(72,202,228,0.2) 0%, transparent 50%),
+      radial-gradient(ellipse at 60% 80%, rgba(244,132,95,0.15) 0%, transparent 45%),
+      linear-gradient(165deg, #061828 0%, #0a2a1a 35%, #061020 70%, #08101e 100%);
+  }
+  /* Animated particles */
+  .particles { position: absolute; inset: 0; overflow: hidden; }
+  .particle {
+    position: absolute;
+    border-radius: 50%;
+    background: var(--cyan);
+    opacity: 0;
+    animation: float-particle 12s infinite;
+  }
+  @keyframes float-particle {
+    0% { transform: translateY(100vh) scale(0); opacity: 0; }
+    10% { opacity: 0.6; }
+    90% { opacity: 0.2; }
+    100% { transform: translateY(-20vh) scale(1); opacity: 0; }
+  }
+
+  /* SVG Wave at hero bottom */
+  .hero-wave {
+    position: absolute; bottom: -2px; left: 0; right: 0;
+    z-index: 2;
+  }
+
+  /* Animated river line */
+  .river-line {
+    position: absolute;
+    width: 100%; height: 2px;
+    bottom: 15%; left: 0;
+    background: linear-gradient(90deg, transparent, var(--cyan), transparent);
+    opacity: 0.3;
+    animation: river-flow 8s ease-in-out infinite;
+  }
+  @keyframes river-flow {
+    0%, 100% { transform: scaleX(0.5) translateX(-30%); opacity: 0.2; }
+    50% { transform: scaleX(1.2) translateX(10%); opacity: 0.5; }
+  }
+
+  .hero-content {
+    position: relative; z-index: 3;
+    text-align: center;
+    padding: 0 2rem;
+    max-width: 1000px;
+  }
+  .hero-eyebrow {
+    font-size: 0.72rem;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: var(--cyan);
+    margin-bottom: 1.5rem;
+    opacity: 0;
+    animation: fade-up 1s 0.3s forwards;
+    font-weight: 400;
+  }
+  .hero-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(3.2rem, 8vw, 7.5rem);
+    font-weight: 300;
+    line-height: 1.05;
+    letter-spacing: -0.01em;
+    margin-bottom: 0.3rem;
+    opacity: 0;
+    animation: fade-up 1.2s 0.5s forwards;
+  }
+  .hero-title em {
+    font-style: italic;
+    color: var(--cyan-soft);
+    display: block;
+  }
+  .hero-subtitle {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(1.1rem, 2.5vw, 1.8rem);
+    font-style: italic;
+    color: var(--sand);
+    margin-bottom: 3rem;
+    font-weight: 300;
+    opacity: 0;
+    animation: fade-up 1s 0.8s forwards;
+    letter-spacing: 0.03em;
+  }
+  .hero-desc {
+    font-size: 1rem;
+    color: rgba(248,246,242,0.6);
+    max-width: 600px;
+    margin: 0 auto 3rem;
+    line-height: 1.8;
+    font-weight: 300;
+    opacity: 0;
+    animation: fade-up 1s 1s forwards;
+  }
+  .hero-buttons {
+    display: flex; gap: 1.2rem; justify-content: center; flex-wrap: wrap;
+    opacity: 0;
+    animation: fade-up 1s 1.2s forwards;
+  }
+  .btn-primary {
+    background: linear-gradient(135deg, var(--green), var(--green-light));
+    color: var(--white);
+    padding: 1rem 2.5rem;
+    border-radius: 50px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    border: none; cursor: none;
+    transition: all 0.4s cubic-bezier(0.23,1,0.32,1);
+    position: relative; overflow: hidden;
+    text-decoration: none; display: inline-block;
+  }
+  .btn-primary::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: linear-gradient(135deg, var(--green-light), var(--cyan));
+    opacity: 0; transition: opacity 0.4s;
+  }
+  .btn-primary:hover::before { opacity: 1; }
+  .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 20px 60px rgba(82,183,136,0.35); }
+  .btn-primary span { position: relative; z-index: 1; }
+  .btn-outline {
+    background: transparent;
+    border: 1px solid rgba(248,246,242,0.3);
+    color: var(--white);
+    padding: 1rem 2.5rem;
+    border-radius: 50px;
+    font-size: 0.85rem;
+    font-weight: 400;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    cursor: none;
+    transition: all 0.4s;
+    text-decoration: none; display: inline-block;
+  }
+  .btn-outline:hover {
+    border-color: var(--cyan);
+    color: var(--cyan);
+    transform: translateY(-3px);
+  }
+  .hero-scroll {
+    position: absolute; bottom: 5rem; left: 50%;
+    transform: translateX(-50%);
+    display: flex; flex-direction: column; align-items: center;
+    gap: 0.5rem; z-index: 3;
+    opacity: 0;
+    animation: fade-up 1s 1.8s forwards;
+  }
+  .hero-scroll span {
+    font-size: 0.65rem; letter-spacing: 0.3em;
+    text-transform: uppercase; color: rgba(255,255,255,0.4);
+  }
+  .scroll-line {
+    width: 1px; height: 50px;
+    background: linear-gradient(to bottom, var(--cyan), transparent);
+    animation: scroll-pulse 2s ease-in-out infinite;
+  }
+  @keyframes scroll-pulse {
+    0%, 100% { transform: scaleY(1); opacity: 0.6; }
+    50% { transform: scaleY(1.3); opacity: 1; }
+  }
+
+  /* Hero stats */
+  .hero-stats {
+    position: absolute; bottom: 7rem; right: 5%;
+    z-index: 3;
+    display: flex; flex-direction: column; gap: 1.5rem;
+    opacity: 0;
+    animation: fade-left 1s 1.5s forwards;
+  }
+  .stat-item { text-align: right; }
+  .stat-number {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2rem; font-weight: 600;
+    color: var(--gold-light);
+    line-height: 1;
+  }
+  .stat-label {
+    font-size: 0.65rem; letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.4);
+  }
+
+  @keyframes fade-up {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes fade-left {
+    from { opacity: 0; transform: translateX(20px); }
+    to { opacity: 1; transform: translateX(0); }
+  }
+
+  /* SECTIONS */
+  section { padding: 8rem 0; }
+  .container { max-width: 1280px; margin: 0 auto; padding: 0 4rem; }
+  .section-eyebrow {
+    font-size: 0.7rem;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: var(--cyan);
+    margin-bottom: 1rem;
+    font-weight: 400;
+  }
+  .section-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2.5rem, 5vw, 4.5rem);
+    font-weight: 300;
+    line-height: 1.1;
+    margin-bottom: 1.5rem;
+    letter-spacing: -0.01em;
+  }
+  .section-title em { font-style: italic; color: var(--cyan-soft); }
+  .section-subtitle {
+    font-size: 1.05rem;
+    color: rgba(248,246,242,0.55);
+    max-width: 600px;
+    line-height: 1.9;
+    font-weight: 300;
+  }
+
+  /* Reveal animation */
+  .reveal {
+    opacity: 0;
+    transform: translateY(40px);
+    transition: opacity 0.9s cubic-bezier(0.23,1,0.32,1), transform 0.9s cubic-bezier(0.23,1,0.32,1);
+  }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+  .reveal-left {
+    opacity: 0;
+    transform: translateX(-40px);
+    transition: opacity 0.9s cubic-bezier(0.23,1,0.32,1), transform 0.9s cubic-bezier(0.23,1,0.32,1);
+  }
+  .reveal-left.visible { opacity: 1; transform: translateX(0); }
+
+  /* ABOUT SECTION */
+  #about { background: var(--deep); position: relative; overflow: hidden; }
+  #about::before {
+    content: '';
+    position: absolute; top: 0; right: 0;
+    width: 50%; height: 100%;
+    background: radial-gradient(ellipse at 80% 50%, rgba(45,106,79,0.12) 0%, transparent 65%);
+    pointer-events: none;
+  }
+  .about-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8rem;
+    align-items: center;
+  }
+  .about-visual {
+    position: relative;
+  }
+  .about-image-main {
+    width: 100%; aspect-ratio: 4/5;
+    background:
+      linear-gradient(160deg, rgba(45,106,79,0.8), rgba(6,16,32,0.9)),
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='500'%3E%3Crect fill='%23143d29' width='400' height='500'/%3E%3Ccircle cx='200' cy='250' r='150' fill='%231a4f35' opacity='0.5'/%3E%3Cellipse cx='200' cy='400' rx='250' ry='80' fill='%230d2a1c' opacity='0.7'/%3E%3C/svg%3E");
+    background-size: cover;
+    border-radius: 4px;
+    display: flex;
+    align-items: flex-end;
+    padding: 2.5rem;
+    overflow: hidden;
+    position: relative;
+  }
+  /* Animated mangrove silhouette */
+  .mangrove-svg {
+    position: absolute; bottom: 0; left: 0; right: 0;
+    opacity: 0.4;
+  }
+  .about-image-caption {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.4rem; font-style: italic;
+    color: var(--sand);
+    position: relative; z-index: 1;
+    line-height: 1.4;
+  }
+  .about-badge {
+    position: absolute; top: -2rem; right: -2rem;
+    width: 130px; height: 130px;
+    background: linear-gradient(135deg, var(--gold), var(--amber));
+    border-radius: 50%;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    text-align: center;
+    box-shadow: 0 20px 60px rgba(201,168,76,0.3);
+  }
+  .about-badge .num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2.2rem; font-weight: 600;
+    color: var(--deep);
+    line-height: 1;
+  }
+  .about-badge .lbl {
+    font-size: 0.6rem; letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: rgba(6,16,32,0.7);
+  }
+
+  /* Timeline */
+  .timeline { margin-top: 3rem; }
+  .timeline-item {
+    display: flex; gap: 1.5rem;
+    padding: 1.5rem 0;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+    transition: all 0.3s;
+  }
+  .timeline-item:hover { padding-left: 0.5rem; }
+  .timeline-year {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.2rem; font-weight: 600;
+    color: var(--gold);
+    min-width: 70px;
+    line-height: 1.3;
+  }
+  .timeline-content h4 {
+    font-size: 0.9rem; font-weight: 500;
+    color: var(--white); margin-bottom: 0.3rem;
+    letter-spacing: 0.02em;
+  }
+  .timeline-content p {
+    font-size: 0.82rem;
+    color: rgba(248,246,242,0.45);
+    line-height: 1.7;
+  }
+
+  /* ATTRACTIONS SECTION */
+  #attractions {
+    background: linear-gradient(180deg, var(--deep) 0%, #0a1a10 50%, var(--deep) 100%);
+    position: relative;
+  }
+  .attractions-header { text-align: center; margin-bottom: 4rem; }
+  .attractions-header .section-subtitle { margin: 0 auto; text-align: center; }
+
+  .cards-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+  }
+  .attraction-card {
+    position: relative;
+    border-radius: 8px;
+    overflow: hidden;
+    aspect-ratio: 3/4;
+    cursor: none;
+    group: true;
+  }
+  .attraction-card.large { grid-row: span 2; aspect-ratio: auto; }
+  .card-bg {
+    position: absolute; inset: 0;
+    transition: transform 0.8s cubic-bezier(0.23,1,0.32,1);
+  }
+  .attraction-card:hover .card-bg { transform: scale(1.06); }
+
+  /* Card gradient backgrounds (cinematic) */
+  .card-bg-1 { background: linear-gradient(160deg, #0d3b2e 0%, #1a5c3a 30%, #0a2018 100%); }
+  .card-bg-2 { background: linear-gradient(160deg, #0a1e35 0%, #0e3a5f 40%, #061528 100%); }
+  .card-bg-3 { background: linear-gradient(160deg, #2a1a08 0%, #5c3a0e 40%, #1a0f05 100%); }
+  .card-bg-4 { background: linear-gradient(160deg, #08202e 0%, #0e3d4a 40%, #061520 100%); }
+  .card-bg-5 { background: linear-gradient(160deg, #1a0a08 0%, #4a1e10 40%, #100605 100%); }
+  .card-bg-6 { background: linear-gradient(160deg, #0a1820 0%, #142a38 40%, #060e14 100%); }
+  .card-bg-7 { background: linear-gradient(160deg, #1a1a08 0%, #3a3a0e 40%, #100f05 100%); }
+
+  /* SVG scene inside each card */
+  .card-scene {
+    position: absolute; inset: 0;
+    display: flex; align-items: center; justify-content: center;
+    opacity: 0.35;
+    transition: opacity 0.5s;
+  }
+  .attraction-card:hover .card-scene { opacity: 0.5; }
+  .card-overlay {
+    position: absolute; inset: 0;
+    background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.3) 50%, transparent 100%);
+  }
+  .card-content {
+    position: absolute; bottom: 0; left: 0; right: 0;
+    padding: 2rem;
+    transform: translateY(0);
+    transition: transform 0.5s cubic-bezier(0.23,1,0.32,1);
+  }
+  .card-tag {
+    font-size: 0.62rem; letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--cyan); margin-bottom: 0.6rem;
+  }
+  .card-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.5rem; font-weight: 400;
+    line-height: 1.2;
+    margin-bottom: 0.5rem;
+    color: var(--white);
+  }
+  .card-desc {
+    font-size: 0.82rem;
+    color: rgba(248,246,242,0.55);
+    line-height: 1.7;
+    max-height: 0; overflow: hidden;
+    transition: max-height 0.5s, opacity 0.5s;
+    opacity: 0;
+  }
+  .attraction-card:hover .card-desc { max-height: 100px; opacity: 1; }
+  .card-arrow {
+    display: inline-flex; align-items: center;
+    gap: 0.4rem;
+    font-size: 0.72rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--cyan);
+    margin-top: 1rem;
+    opacity: 0;
+    transform: translateX(-10px);
+    transition: opacity 0.5s, transform 0.5s;
+  }
+  .attraction-card:hover .card-arrow { opacity: 1; transform: translateX(0); }
+
+  /* WILDLIFE SECTION */
+  #wildlife {
+    background: var(--deep);
+    position: relative; overflow: hidden;
+  }
+  #wildlife::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse at 50% 100%, rgba(45,106,79,0.2) 0%, transparent 60%);
+  }
+  .wildlife-grid {
+    display: grid;
+    grid-template-columns: 1fr 1.2fr;
+    gap: 6rem;
+    align-items: center;
+  }
+  .wildlife-items { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+  .wildlife-card {
+    background: var(--glass);
+    border: 1px solid var(--glass-border);
+    border-radius: 12px;
+    padding: 1.8rem 1.5rem;
+    backdrop-filter: blur(10px);
+    transition: all 0.4s cubic-bezier(0.23,1,0.32,1);
+    cursor: none;
+    position: relative;
+    overflow: hidden;
+  }
+  .wildlife-card::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: linear-gradient(135deg, rgba(82,183,136,0.08), transparent);
+    opacity: 0; transition: opacity 0.4s;
+  }
+  .wildlife-card:hover::before { opacity: 1; }
+  .wildlife-card:hover {
+    transform: translateY(-5px);
+    border-color: rgba(82,183,136,0.3);
+    box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+  }
+  .wildlife-icon {
+    font-size: 2.2rem;
+    margin-bottom: 1rem;
+    display: block;
+  }
+  .wildlife-card h3 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.25rem; font-weight: 400;
+    margin-bottom: 0.5rem;
+  }
+  .wildlife-card p {
+    font-size: 0.82rem;
+    color: rgba(248,246,242,0.5);
+    line-height: 1.7;
+  }
+  .wildlife-visual {
+    position: relative;
+  }
+  .wildlife-visual-inner {
+    border-radius: 8px; overflow: hidden;
+    position: relative;
+    aspect-ratio: 4/5;
+    background: linear-gradient(160deg, #0a2a1a, #061020);
+  }
+  .wildlife-label {
+    position: absolute; bottom: 2rem; left: 2rem;
+    background: rgba(6,16,32,0.7);
+    backdrop-filter: blur(10px);
+    border: 1px solid var(--glass-border);
+    border-radius: 8px;
+    padding: 1.2rem 1.5rem;
+  }
+  .wildlife-label .species {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.4rem; font-style: italic;
+    color: var(--green-light);
+  }
+  .wildlife-label .count {
+    font-size: 0.72rem; letter-spacing: 0.15em;
+    color: rgba(255,255,255,0.4);
+    text-transform: uppercase;
+  }
+
+  /* CULTURE SECTION */
+  #culture {
+    background: linear-gradient(180deg, var(--deep) 0%, #0d0a1a 100%);
+    position: relative;
+  }
+  .culture-header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 4rem; }
+  .festivals-scroll {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.5rem;
+  }
+  .festival-card {
+    border-radius: 8px;
+    overflow: hidden;
+    position: relative;
+    aspect-ratio: 2/3;
+    cursor: none;
+    transition: transform 0.5s cubic-bezier(0.23,1,0.32,1);
+  }
+  .festival-card:hover { transform: translateY(-8px) scale(1.02); }
+  .festival-bg {
+    position: absolute; inset: 0;
+    transition: transform 0.8s cubic-bezier(0.23,1,0.32,1);
+  }
+  .festival-card:hover .festival-bg { transform: scale(1.08); }
+  .festival-bg-1 { background: linear-gradient(160deg, #2a0a35 0%, #6b1e8a 40%, #1a0520 100%); }
+  .festival-bg-2 { background: linear-gradient(160deg, #2a1a08 0%, #8a4e1e 40%, #1a0f05 100%); }
+  .festival-bg-3 { background: linear-gradient(160deg, #0a2a1a 0%, #1e8a4e 40%, #05201a 100%); }
+  .festival-bg-4 { background: linear-gradient(160deg, #08202a 0%, #1e6b8a 40%, #05141a 100%); }
+  .festival-overlay {
+    position: absolute; inset: 0;
+    background: linear-gradient(to top, rgba(0,0,0,0.85) 0%, transparent 60%);
+  }
+  .festival-content {
+    position: absolute; bottom: 0; left: 0; right: 0;
+    padding: 1.5rem;
+  }
+  .festival-month {
+    font-size: 0.62rem; letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--gold-light);
+    margin-bottom: 0.4rem;
+  }
+  .festival-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.3rem; font-weight: 400;
+    margin-bottom: 0.4rem;
+  }
+  .festival-desc {
+    font-size: 0.75rem;
+    color: rgba(248,246,242,0.5);
+    line-height: 1.6;
+  }
+
+  /* FOOD SECTION */
+  #food {
+    background: var(--deep);
+    position: relative; overflow: hidden;
+  }
+  .food-intro {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6rem;
+    margin-bottom: 5rem;
+    align-items: center;
+  }
+  .food-visual {
+    aspect-ratio: 1;
+    border-radius: 50%;
+    background: radial-gradient(circle, #2a1505, #0a0a05);
+    position: relative;
+    overflow: hidden;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .food-items {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+  }
+  .food-item {
+    background: var(--glass);
+    border: 1px solid var(--glass-border);
+    border-radius: 12px;
+    padding: 1.5rem 1rem;
+    text-align: center;
+    cursor: none;
+    transition: all 0.4s;
+    backdrop-filter: blur(8px);
+  }
+  .food-item:hover {
+    transform: translateY(-5px);
+    border-color: rgba(244,132,95,0.4);
+    background: rgba(244,132,95,0.08);
+  }
+  .food-emoji { font-size: 2rem; margin-bottom: 0.8rem; display: block; }
+  .food-name {
+    font-size: 0.85rem; font-weight: 500;
+    margin-bottom: 0.3rem;
+  }
+  .food-detail {
+    font-size: 0.72rem;
+    color: rgba(248,246,242,0.4);
+  }
+
+  /* ECO SECTION */
+  #eco {
+    background: linear-gradient(180deg, var(--deep), #071510, var(--deep));
+    position: relative; overflow: hidden;
+  }
+  .eco-banner {
+    background: linear-gradient(135deg, rgba(45,106,79,0.25), rgba(82,183,136,0.1));
+    border: 1px solid rgba(82,183,136,0.2);
+    border-radius: 20px;
+    padding: 5rem;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    backdrop-filter: blur(10px);
+  }
+  .eco-banner::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse at center, rgba(82,183,136,0.12) 0%, transparent 70%);
+  }
+  .eco-banner h2 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2.5rem, 5vw, 4.5rem);
+    font-weight: 300;
+    margin-bottom: 1.5rem;
+  }
+  .eco-banner p {
+    font-size: 1.05rem;
+    color: rgba(248,246,242,0.6);
+    max-width: 700px;
+    margin: 0 auto 3rem;
+    line-height: 1.9;
+  }
+  .eco-pills {
+    display: flex; flex-wrap: wrap; gap: 1rem; justify-content: center; margin-bottom: 3rem;
+  }
+  .eco-pill {
+    background: rgba(82,183,136,0.12);
+    border: 1px solid rgba(82,183,136,0.25);
+    color: var(--green-light);
+    padding: 0.6rem 1.4rem;
+    border-radius: 50px;
+    font-size: 0.8rem;
+    letter-spacing: 0.08em;
+  }
+
+  /* GALLERY */
+  #gallery { background: var(--deep); }
+  .gallery-header { text-align: center; margin-bottom: 4rem; }
+  .gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-auto-rows: 220px;
+    gap: 1rem;
+  }
+  .gallery-item {
+    border-radius: 6px;
+    overflow: hidden;
+    position: relative;
+    cursor: none;
+    transition: transform 0.5s cubic-bezier(0.23,1,0.32,1);
+  }
+  .gallery-item.wide { grid-column: span 2; }
+  .gallery-item.tall { grid-row: span 2; }
+  .gallery-item:hover { transform: scale(1.02); z-index: 1; }
+  .gallery-bg {
+    position: absolute; inset: 0;
+    transition: transform 0.8s cubic-bezier(0.23,1,0.32,1);
+  }
+  .gallery-item:hover .gallery-bg { transform: scale(1.08); }
+  .gallery-overlay {
+    position: absolute; inset: 0;
+    background: linear-gradient(to top, rgba(0,0,0,0.7), transparent);
+    opacity: 0;
+    transition: opacity 0.4s;
+  }
+  .gallery-item:hover .gallery-overlay { opacity: 1; }
+  .gallery-caption {
+    position: absolute; bottom: 1.2rem; left: 1.2rem;
+    opacity: 0; transition: opacity 0.4s;
+    font-size: 0.8rem; letter-spacing: 0.1em;
+    text-transform: uppercase; color: var(--white);
+  }
+  .gallery-item:hover .gallery-caption { opacity: 1; }
+
+  /* Gallery backgrounds */
+  .gb-1 { background: linear-gradient(135deg, #0d3b2e, #1a6b3f, #0a2018); }
+  .gb-2 { background: linear-gradient(135deg, #0a1e35, #0e3d6b, #061020); }
+  .gb-3 { background: linear-gradient(135deg, #2a1505, #6b3a0e, #100806); }
+  .gb-4 { background: linear-gradient(135deg, #1a0a2a, #4a1e6b, #0a0514); }
+  .gb-5 { background: linear-gradient(135deg, #082028, #0e4050, #030d12); }
+  .gb-6 { background: linear-gradient(135deg, #1a2a08, #3a5a10, #0a1005); }
+  .gb-7 { background: linear-gradient(135deg, #2a0808, #6b1e1e, #120505); }
+  .gb-8 { background: linear-gradient(135deg, #082010, #0e4a1e, #030e08); }
+
+  /* PLAN SECTION */
+  #plan {
+    background: linear-gradient(135deg, var(--mangrove) 0%, var(--ocean) 100%);
+    position: relative; overflow: hidden;
+  }
+  #plan::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse at 30% 50%, rgba(72,202,228,0.1) 0%, transparent 60%);
+  }
+  .plan-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6rem;
+    align-items: center;
+  }
+  .plan-items { display: flex; flex-direction: column; gap: 1.5rem; }
+  .plan-item {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 12px;
+    padding: 2rem;
+    display: flex; gap: 1.5rem; align-items: flex-start;
+    backdrop-filter: blur(10px);
+    transition: all 0.4s;
+    cursor: none;
+  }
+  .plan-item:hover {
+    background: rgba(255,255,255,0.09);
+    transform: translateX(8px);
+    border-color: rgba(72,202,228,0.3);
+  }
+  .plan-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2.5rem; font-weight: 300;
+    color: var(--cyan);
+    line-height: 1;
+    min-width: 40px;
+  }
+  .plan-item h3 {
+    font-size: 1rem; font-weight: 500;
+    margin-bottom: 0.4rem;
+    letter-spacing: 0.02em;
+  }
+  .plan-item p {
+    font-size: 0.82rem;
+    color: rgba(248,246,242,0.5);
+    line-height: 1.7;
+  }
+  .plan-cta-box {
+    background: linear-gradient(135deg, rgba(82,183,136,0.2), rgba(72,202,228,0.1));
+    border: 1px solid rgba(82,183,136,0.25);
+    border-radius: 20px;
+    padding: 3rem;
+    text-align: center;
+    backdrop-filter: blur(10px);
+  }
+  .plan-cta-box h3 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2.2rem; font-weight: 300;
+    margin-bottom: 1rem;
+  }
+  .plan-cta-box p {
+    font-size: 0.9rem;
+    color: rgba(248,246,242,0.55);
+    line-height: 1.8;
+    margin-bottom: 2rem;
+  }
+  .reach-tags { display: flex; flex-direction: column; gap: 0.8rem; margin-bottom: 2rem; }
+  .reach-tag {
+    display: flex; align-items: center; gap: 1rem;
+    background: rgba(255,255,255,0.05);
+    border-radius: 8px;
+    padding: 0.8rem 1.2rem;
+    text-align: left;
+    font-size: 0.82rem;
+    color: rgba(248,246,242,0.7);
+  }
+  .reach-tag .icon { color: var(--cyan); font-size: 1rem; }
+
+  /* QUOTE SECTION */
+  #quote {
+    background: var(--deep);
+    text-align: center;
+    padding: 10rem 0;
+    position: relative; overflow: hidden;
+  }
+  #quote::before {
+    content: '';
+    position: absolute; inset: 0;
+    background:
+      radial-gradient(ellipse at 30% 50%, rgba(201,168,76,0.08) 0%, transparent 50%),
+      radial-gradient(ellipse at 70% 50%, rgba(72,202,228,0.06) 0%, transparent 50%);
+  }
+  .big-quote {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2rem, 4.5vw, 4rem);
+    font-style: italic;
+    font-weight: 300;
+    line-height: 1.4;
+    max-width: 900px;
+    margin: 0 auto 2rem;
+    position: relative; z-index: 1;
+    color: var(--sand-light);
+  }
+  .big-quote::before {
+    content: '\201C';
+    font-size: 8rem;
+    color: rgba(201,168,76,0.15);
+    position: absolute;
+    top: -3rem; left: -2rem;
+    font-family: 'Cormorant Garamond', serif;
+    line-height: 1;
+  }
+  .quote-author {
+    font-size: 0.78rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--gold);
+    position: relative; z-index: 1;
+  }
+
+  /* FOOTER */
+  footer {
+    background: #030810;
+    border-top: 1px solid rgba(255,255,255,0.06);
+    padding: 5rem 0 3rem;
+  }
+  .footer-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: 4rem;
+    margin-bottom: 4rem;
+  }
+  .footer-brand .logo {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.8rem; font-weight: 600;
+    color: var(--white);
+    margin-bottom: 1rem;
+    display: block;
+  }
+  .footer-brand .logo span { color: var(--cyan); }
+  .footer-brand p {
+    font-size: 0.82rem;
+    color: rgba(248,246,242,0.4);
+    line-height: 1.8; max-width: 280px;
+  }
+  .footer-col h4 {
+    font-size: 0.72rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.5);
+    margin-bottom: 1.5rem;
+    font-weight: 400;
+  }
+  .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 0.8rem; }
+  .footer-col a {
+    color: rgba(248,246,242,0.45);
+    text-decoration: none;
+    font-size: 0.85rem;
+    transition: color 0.3s;
+  }
+  .footer-col a:hover { color: var(--white); }
+  .footer-bottom {
+    border-top: 1px solid rgba(255,255,255,0.05);
+    padding-top: 2rem;
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  .footer-bottom p {
+    font-size: 0.75rem;
+    color: rgba(248,246,242,0.25);
+  }
+  .footer-bottom p a { color: var(--cyan); text-decoration: none; }
+  .social-links { display: flex; gap: 1.2rem; }
+  .social-link {
+    width: 36px; height: 36px;
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    color: rgba(255,255,255,0.4);
+    text-decoration: none;
+    font-size: 0.75rem;
+    transition: all 0.3s;
+    cursor: none;
+  }
+  .social-link:hover {
+    border-color: var(--cyan);
+    color: var(--cyan);
+    background: rgba(72,202,228,0.1);
+  }
+
+  /* GEOGRAPHIC BADGE */
+  .geo-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 50px;
+    padding: 0.4rem 1rem;
+    font-size: 0.7rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.5);
+    margin-bottom: 1rem;
+  }
+  .geo-dot {
+    width: 6px; height: 6px;
+    background: var(--green-light);
+    border-radius: 50%;
+    animation: pulse-dot 2s ease-in-out infinite;
+  }
+  @keyframes pulse-dot {
+    0%, 100% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.5); opacity: 0.6; }
+  }
+
+  /* DIVIDER */
+  .section-divider {
+    width: 60px; height: 1px;
+    background: linear-gradient(90deg, var(--cyan), transparent);
+    margin: 2rem 0;
+  }
+
+  /* MOBILE NAV */
+  .mobile-menu {
+    position: fixed; inset: 0;
+    background: rgba(6,10,20,0.97);
+    backdrop-filter: blur(20px);
+    z-index: 999;
+    display: flex; align-items: center; justify-content: center;
+    opacity: 0; pointer-events: none;
+    transition: opacity 0.4s;
+  }
+  .mobile-menu.open { opacity: 1; pointer-events: all; }
+  .mobile-menu ul {
+    list-style: none;
+    text-align: center;
+    display: flex; flex-direction: column; gap: 2rem;
+  }
+  .mobile-menu a {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2.5rem; font-weight: 300;
+    font-style: italic;
+    color: var(--white);
+    text-decoration: none;
+    transition: color 0.3s;
+  }
+  .mobile-menu a:hover { color: var(--cyan); }
+  .menu-close {
+    position: absolute; top: 2rem; right: 2rem;
+    background: none; border: none;
+    color: var(--white); font-size: 2rem;
+    cursor: none;
+  }
+
+  /* RESPONSIVE */
+  @media (max-width: 1024px) {
+    .container { padding: 0 2.5rem; }
+    nav { padding: 1.2rem 2.5rem; }
+    nav.scrolled { padding: 0.8rem 2.5rem; }
+    .nav-links { display: none; }
+    .nav-cta { display: none; }
+    .hamburger { display: flex; }
+    .about-grid { grid-template-columns: 1fr; gap: 3rem; }
+    .about-visual { order: -1; }
+    .about-badge { right: 1rem; }
+    .cards-grid { grid-template-columns: 1fr 1fr; }
+    .attraction-card.large { grid-row: span 1; }
+    .wildlife-grid { grid-template-columns: 1fr; gap: 3rem; }
+    .food-intro { grid-template-columns: 1fr; gap: 2rem; }
+    .food-visual { display: none; }
+    .festivals-scroll { grid-template-columns: 1fr 1fr; }
+    .plan-grid { grid-template-columns: 1fr; gap: 3rem; }
+    .footer-grid { grid-template-columns: 1fr 1fr; gap: 2.5rem; }
+    .hero-stats { display: none; }
+  }
+  @media (max-width: 768px) {
+    section { padding: 5rem 0; }
+    .container { padding: 0 1.5rem; }
+    nav { padding: 1rem 1.5rem; }
+    nav.scrolled { padding: 0.8rem 1.5rem; }
+    .cards-grid { grid-template-columns: 1fr; }
+    .wildlife-items { grid-template-columns: 1fr; }
+    .gallery-grid { grid-template-columns: 1fr 1fr; grid-auto-rows: 180px; }
+    .gallery-item.wide { grid-column: span 2; }
+    .gallery-item.tall { grid-row: span 1; }
+    .festivals-scroll { grid-template-columns: 1fr 1fr; }
+    .food-items { grid-template-columns: 1fr 1fr; }
+    .footer-grid { grid-template-columns: 1fr; gap: 2rem; }
+    .footer-bottom { flex-direction: column; gap: 1.5rem; text-align: center; }
+    .eco-banner { padding: 3rem 2rem; }
+    .culture-header { flex-direction: column; gap: 1.5rem; align-items: flex-start; }
+    .hero-scroll { bottom: 2.5rem; }
+    .hero-buttons { flex-direction: column; align-items: center; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Custom Cursor -->
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- Mobile Menu -->
+<div class="mobile-menu" id="mobileMenu">
+  <button class="menu-close" id="menuClose">✕</button>
+  <ul>
+    <li><a href="#about" onclick="closeMobileMenu()">About</a></li>
+    <li><a href="#attractions" onclick="closeMobileMenu()">Attractions</a></li>
+    <li><a href="#wildlife" onclick="closeMobileMenu()">Wildlife</a></li>
+    <li><a href="#culture" onclick="closeMobileMenu()">Culture</a></li>
+    <li><a href="#food" onclick="closeMobileMenu()">Cuisine</a></li>
+    <li><a href="#plan" onclick="closeMobileMenu()">Plan Visit</a></li>
+  </ul>
+</div>
+
+<!-- Navigation -->
+<nav id="navbar">
+  <a href="#" class="nav-logo">Kendra<span>para</span></a>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#attractions">Attractions</a></li>
+    <li><a href="#wildlife">Wildlife</a></li>
+    <li><a href="#culture">Culture</a></li>
+    <li><a href="#food">Cuisine</a></li>
+    <li><a href="#plan">Plan Visit</a></li>
+  </ul>
+  <button class="nav-cta" onclick="document.getElementById('plan').scrollIntoView({behavior:'smooth'})">Plan Journey</button>
+  <div class="hamburger" id="hamburger" onclick="openMobileMenu()">
+    <span></span><span></span><span></span>
+  </div>
+</nav>
+
+<!-- HERO SECTION -->
+<section id="hero">
+  <div class="hero-bg"></div>
+
+  <!-- Animated particles -->
+  <div class="particles" id="particles"></div>
+
+  <!-- Animated river line -->
+  <div class="river-line"></div>
+
+  <!-- Background SVG landscape -->
+  <svg style="position:absolute;inset:0;width:100%;height:100%;opacity:0.12;pointer-events:none" viewBox="0 0 1400 800" preserveAspectRatio="xMidYMid slice">
+    <!-- Stars -->
+    <g fill="white" opacity="0.6">
+      <circle cx="100" cy="80" r="1"/><circle cx="250" cy="120" r="1.2"/><circle cx="420" cy="60" r="0.8"/>
+      <circle cx="600" cy="90" r="1.1"/><circle cx="800" cy="50" r="0.9"/><circle cx="1050" cy="100" r="1.3"/>
+      <circle cx="1200" cy="70" r="0.8"/><circle cx="1350" cy="110" r="1"/>
+      <circle cx="150" cy="200" r="0.9"/><circle cx="350" cy="180" r="1.2"/><circle cx="700" cy="160" r="0.8"/>
+      <circle cx="900" cy="140" r="1.1"/><circle cx="1100" cy="190" r="0.9"/>
+    </g>
+    <!-- Horizon glow -->
+    <ellipse cx="700" cy="500" rx="500" ry="120" fill="url(#horizonGrad)" opacity="0.5"/>
+    <!-- Mountains/Hills silhouette -->
+    <path d="M0,500 Q200,380 400,420 Q600,460 700,380 Q800,300 1000,380 Q1150,430 1400,360 L1400,800 L0,800 Z" fill="#0a2018" opacity="0.8"/>
+    <!-- Closer hills -->
+    <path d="M0,580 Q300,520 500,540 Q700,560 900,520 Q1100,480 1400,530 L1400,800 L0,800 Z" fill="#061a10" opacity="0.9"/>
+    <!-- Mangrove tree silhouettes -->
+    <g fill="#041208" opacity="0.9">
+      <!-- Left trees -->
+      <rect x="50" y="560" width="3" height="80"/>
+      <ellipse cx="51" cy="560" rx="25" ry="30"/>
+      <rect x="80" y="540" width="3" height="100"/>
+      <ellipse cx="81" cy="540" rx="30" ry="35"/>
+      <rect x="115" y="555" width="3" height="85"/>
+      <ellipse cx="116" cy="555" rx="22" ry="28"/>
+      <!-- Right trees -->
+      <rect x="1270" y="545" width="3" height="95"/>
+      <ellipse cx="1271" cy="545" rx="28" ry="32"/>
+      <rect x="1310" y="560" width="3" height="80"/>
+      <ellipse cx="1311" cy="560" rx="22" ry="26"/>
+      <rect x="1345" y="550" width="3" height="90"/>
+      <ellipse cx="1346" cy="550" rx="25" ry="30"/>
+    </g>
+    <!-- River reflection -->
+    <rect x="250" y="640" width="900" height="4" rx="2" fill="#48cae4" opacity="0.3"/>
+    <rect x="350" y="660" width="700" height="2" rx="1" fill="#48cae4" opacity="0.2"/>
+    <!-- Temple silhouette -->
+    <g fill="#061a20" opacity="0.7">
+      <rect x="660" y="430" width="80" height="120"/>
+      <polygon points="700,380 660,430 740,430"/>
+      <polygon points="700,350 675,380 725,380"/>
+      <rect x="680" y="490" width="40" height="60"/>
+    </g>
+    <defs>
+      <radialGradient id="horizonGrad" cx="50%" cy="50%" r="50%">
+        <stop offset="0%" stop-color="#48cae4"/>
+        <stop offset="100%" stop-color="transparent"/>
+      </radialGradient>
+    </defs>
+  </svg>
+
+  <div class="hero-content">
+    <div class="geo-badge">
+      <span class="geo-dot"></span>
+      Odisha, Eastern India
+    </div>
+    <p class="hero-eyebrow">Discover the Untouched</p>
+    <h1 class="hero-title">
+      Kendrapara
+      <em>The Soul of Coastal Odisha</em>
+    </h1>
+    <p class="hero-subtitle">Where Rivers Kiss the Sea & Wilderness Breathes</p>
+    <p class="hero-desc">
+      A pristine paradise where ancient temples rise beside mangrove forests, rare olive ridley turtles nest on moonlit beaches, and the rivers carry centuries of untold stories.
+    </p>
+    <div class="hero-buttons">
+      <a href="#attractions" class="btn-primary"><span>✦ Explore Kendrapara</span></a>
+      <a href="#plan" class="btn-outline">Plan Your Journey</a>
+    </div>
+  </div>
+
+  <!-- Stats -->
+  <div class="hero-stats">
+    <div class="stat-item reveal">
+      <div class="stat-number">672 km²</div>
+      <div class="stat-label">Bhitarkanika Area</div>
+    </div>
+    <div class="stat-item reveal">
+      <div class="stat-number">1,400+</div>
+      <div class="stat-label">Wildlife Species</div>
+    </div>
+    <div class="stat-item reveal">
+      <div class="stat-number">3,500+</div>
+      <div class="stat-label">Saltwater Crocs</div>
+    </div>
+  </div>
+
+  <!-- Scroll indicator -->
+  <div class="hero-scroll">
+    <span>Scroll</span>
+    <div class="scroll-line"></div>
+  </div>
+
+  <!-- Wave SVG -->
+  <svg class="hero-wave" viewBox="0 0 1440 80" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M0,40 C360,80 1080,0 1440,40 L1440,80 L0,80 Z" fill="#061020"/>
+  </svg>
+</section>
+
+<!-- ABOUT SECTION -->
+<section id="about">
+  <div class="container">
+    <div class="about-grid">
+      <div class="about-visual reveal-left">
+        <div class="about-image-main">
+          <!-- Mangrove SVG scene -->
+          <svg class="mangrove-svg" viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
+            <!-- Water -->
+            <rect x="0" y="220" width="400" height="80" fill="#0a2a3a" opacity="0.8"/>
+            <!-- Water ripples -->
+            <ellipse cx="200" cy="240" rx="150" ry="8" fill="none" stroke="#48cae4" stroke-width="1" opacity="0.4"/>
+            <ellipse cx="200" cy="255" rx="100" ry="5" fill="none" stroke="#48cae4" stroke-width="0.5" opacity="0.3"/>
+            <!-- Mangrove trees -->
+            <g fill="#1a4a2a">
+              <rect x="30" y="120" width="8" height="110"/><ellipse cx="34" cy="120" rx="35" ry="45"/>
+              <rect x="60" y="100" width="8" height="130"/><ellipse cx="64" cy="100" rx="40" ry="52"/>
+              <rect x="95" y="130" width="6" height="100"/><ellipse cx="98" cy="130" rx="28" ry="38"/>
+              <rect x="310" y="110" width="8" height="120"/><ellipse cx="314" cy="110" rx="38" ry="48"/>
+              <rect x="350" y="125" width="7" height="105"/><ellipse cx="353" cy="125" rx="32" ry="40"/>
+              <rect x="380" y="140" width="6" height="90"/><ellipse cx="383" cy="140" rx="26" ry="34"/>
+            </g>
+            <!-- Crocodile silhouette -->
+            <g fill="#0a2010" opacity="0.6">
+              <ellipse cx="200" cy="228" rx="45" ry="6"/>
+              <polygon points="245,228 270,224 245,232"/>
+            </g>
+            <!-- Bird silhouettes -->
+            <g fill="none" stroke="#48cae4" stroke-width="1.5" opacity="0.5">
+              <path d="M180,80 Q185,74 192,80"/><path d="M200,65 Q205,59 212,65"/>
+              <path d="M155,90 Q160,84 167,90"/>
+            </g>
+          </svg>
+          <p class="about-image-caption">"Where the Bramhani meets the Bay of Bengal — nature in its purest form"</p>
+        </div>
+        <div class="about-badge">
+          <span class="num">1.6M+</span>
+          <span class="lbl">People &amp; Stories</span>
+        </div>
+      </div>
+      <div class="about-text reveal">
+        <p class="section-eyebrow">Our Story</p>
+        <h2 class="section-title">A Land of <em>Timeless</em> Beauty</h2>
+        <div class="section-divider"></div>
+        <p class="section-subtitle" style="margin-bottom:2rem">
+          Nestled between the Bramhani, Baitarani, and Mahanadi rivers in coastal Odisha, Kendrapara is a district of extraordinary natural and cultural richness — a secret that the world is only beginning to discover.
+        </p>
+        <p style="font-size:0.88rem;color:rgba(248,246,242,0.45);line-height:1.9;margin-bottom:2rem">
+          Home to one of India's most spectacular national parks, the world's largest nesting ground of Olive Ridley sea turtles, ancient Vaishnavite temples, vibrant festivals, and a cuisine shaped by the sea — Kendrapara is not just a destination; it is an experience that stays with you forever.
+        </p>
+        <div class="timeline">
+          <div class="timeline-item reveal">
+            <div class="timeline-year">7th C</div>
+            <div class="timeline-content">
+              <h4>Ancient Origins</h4>
+              <p>Settlements along the Bramhani river; roots in the great Kalinga civilization</p>
+            </div>
+          </div>
+          <div class="timeline-item reveal">
+            <div class="timeline-year">1195</div>
+            <div class="timeline-content">
+              <h4>Baladevjew Temple</h4>
+              <p>The iconic Baladevjew Temple established — spiritual anchor of the district</p>
+            </div>
+          </div>
+          <div class="timeline-item reveal">
+            <div class="timeline-year">1975</div>
+            <div class="timeline-content">
+              <h4>Bhitarkanika Sanctuary</h4>
+              <p>Declared a wildlife sanctuary, protecting India's second-largest mangrove ecosystem</p>
+            </div>
+          </div>
+          <div class="timeline-item reveal">
+            <div class="timeline-year">1998</div>
+            <div class="timeline-content">
+              <h4>National Park Status</h4>
+              <p>Bhitarkanika elevated to National Park — home to 3,500+ saltwater crocodiles</p>
+            </div>
+          </div>
+          <div class="timeline-item reveal">
+            <div class="timeline-year">Today</div>
+            <div class="timeline-content">
+              <h4>Rising Eco-Destination</h4>
+              <p>A global hotspot for wildlife tourism, photography, and cultural travel</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ATTRACTIONS SECTION -->
+<section id="attractions">
+  <div class="container">
+    <div class="attractions-header reveal">
+      <p class="section-eyebrow">Must Experience</p>
+      <h2 class="section-title">Discover the <em>Wonders</em></h2>
+      <p class="section-subtitle">Seven extraordinary destinations that define Kendrapara's soul</p>
+    </div>
+
+    <div class="cards-grid">
+      <!-- Card 1 — Bhitarkanika (large) -->
+      <div class="attraction-card large reveal">
+        <div class="card-bg card-bg-1"></div>
+        <div class="card-scene">
+          <svg viewBox="0 0 300 500" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+            <!-- Dense mangrove forest scene -->
+            <rect width="300" height="500" fill="#061a10"/>
+            <!-- Water base -->
+            <rect x="0" y="380" width="300" height="120" fill="#071e2a"/>
+            <!-- Trees back layer -->
+            <g fill="#0a2a14" opacity="0.6">
+              <rect x="0" y="180" width="12" height="220"/><ellipse cx="6" cy="180" rx="40" ry="55"/>
+              <rect x="40" y="150" width="12" height="250"/><ellipse cx="46" cy="150" rx="48" ry="65"/>
+              <rect x="90" y="170" width="10" height="230"/><ellipse cx="95" cy="170" rx="42" ry="58"/>
+              <rect x="180" y="155" width="12" height="245"/><ellipse cx="186" cy="155" rx="46" ry="62"/>
+              <rect x="230" y="175" width="10" height="225"/><ellipse cx="235" cy="175" rx="40" ry="55"/>
+              <rect x="275" y="165" width="11" height="235"/><ellipse cx="280" cy="165" rx="44" ry="60"/>
+            </g>
+            <!-- Front trees -->
+            <g fill="#143d20">
+              <rect x="20" y="240" width="14" height="160"/><ellipse cx="27" cy="240" rx="50" ry="68"/>
+              <rect x="110" y="220" width="14" height="180"/><ellipse cx="117" cy="220" rx="55" ry="72"/>
+              <rect x="210" y="235" width="13" height="165"/><ellipse cx="216" cy="235" rx="48" ry="65"/>
+            </g>
+            <!-- Crocodile -->
+            <g fill="#0a2010" opacity="0.8">
+              <ellipse cx="150" cy="400" rx="70" ry="10"/>
+              <polygon points="220,400 260,393 220,407"/>
+              <circle cx="135" cy="395" r="3" fill="#2d6a4f"/>
+            </g>
+            <!-- Sun rays -->
+            <g stroke="#f7b731" stroke-width="1" opacity="0.12">
+              <line x1="150" y1="0" x2="50" y2="300"/>
+              <line x1="150" y1="0" x2="150" y2="300"/>
+              <line x1="150" y1="0" x2="250" y2="300"/>
+              <line x1="150" y1="0" x2="0" y2="200"/>
+              <line x1="150" y1="0" x2="300" y2="200"/>
+            </g>
+          </svg>
+        </div>
+        <div class="card-overlay"></div>
+        <div class="card-content">
+          <p class="card-tag">🏞️ National Park</p>
+          <h3 class="card-title">Bhitarkanika National Park</h3>
+          <p class="card-desc">India's second-largest mangrove ecosystem, home to 3,500+ saltwater crocodiles, rare king cobras, and hundreds of migratory birds. A UNESCO biosphere.</p>
+          <span class="card-arrow">Discover More →</span>
+        </div>
+      </div>
+
+      <!-- Card 2 — Gahirmatha -->
+      <div class="attraction-card reveal">
+        <div class="card-bg card-bg-2"></div>
+        <div class="card-scene">
+          <svg viewBox="0 0 300 400" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+            <rect width="300" height="400" fill="#071525"/>
+            <!-- Night sky -->
+            <g fill="white" opacity="0.7">
+              <circle cx="50" cy="40" r="1"/><circle cx="120" cy="20" r="1.2"/><circle cx="200" cy="55" r="0.8"/>
+              <circle cx="260" cy="30" r="1.1"/><circle cx="30" cy="80" r="0.9"/>
+            </g>
+            <!-- Moon -->
+            <circle cx="240" cy="60" r="22" fill="#e8d5b7" opacity="0.8"/>
+            <circle cx="250" cy="55" r="18" fill="#071525"/>
+            <!-- Ocean waves -->
+            <path d="M0,280 Q75,260 150,280 Q225,300 300,280 L300,400 L0,400Z" fill="#0e3a5f" opacity="0.9"/>
+            <path d="M0,300 Q75,282 150,300 Q225,318 300,300 L300,400 L0,400Z" fill="#0a2a4a" opacity="0.9"/>
+            <!-- Turtles on beach -->
+            <g fill="#0a2a1a" opacity="0.8">
+              <ellipse cx="80" cy="270" rx="20" ry="12"/>
+              <ellipse cx="150" cy="265" rx="18" ry="11"/>
+              <ellipse cx="220" cy="272" rx="22" ry="13"/>
+              <ellipse cx="260" cy="268" rx="16" ry="10"/>
+            </g>
+            <!-- Moon reflection -->
+            <rect x="130" y="285" width="40" height="80" rx="5" fill="#e8c97a" opacity="0.1"/>
+          </svg>
+        </div>
+        <div class="card-overlay"></div>
+        <div class="card-content">
+          <p class="card-tag">🐢 Marine Sanctuary</p>
+          <h3 class="card-title">Gahirmatha Beach</h3>
+          <p class="card-desc">World's largest Olive Ridley sea turtle nesting beach. Witness mass arrivals (Arribada) — one of nature's most breathtaking spectacles.</p>
+          <span class="card-arrow">Discover More →</span>
+        </div>
+      </div>
+
+      <!-- Card 3 — Baladevjew Temple -->
+      <div class="attraction-card reveal">
+        <div class="card-bg card-bg-3"></div>
+        <div class="card-scene">
+          <svg viewBox="0 0 300 400" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+            <rect width="300" height="400" fill="#1a0d05"/>
+            <!-- Temple architecture -->
+            <rect x="100" y="180" width="100" height="180" fill="#3a2010"/>
+            <!-- Temple spire levels -->
+            <rect x="110" y="140" width="80" height="50" fill="#4a2a14"/>
+            <rect x="120" y="105" width="60" height="45" fill="#5a3418"/>
+            <rect x="130" y="75" width="40" height="38" fill="#6a3e1e"/>
+            <rect x="138" y="50" width="24" height="32" fill="#7a4a24"/>
+            <!-- Spire top -->
+            <polygon points="150,20 140,50 160,50" fill="#c9a84c"/>
+            <circle cx="150" cy="18" r="6" fill="#e8c97a"/>
+            <!-- Temple details -->
+            <rect x="130" y="280" width="40" height="80" fill="#2a1808"/>
+            <g fill="#c9a84c" opacity="0.6">
+              <rect x="108" y="188" width="8" height="30"/><rect x="184" y="188" width="8" height="30"/>
+              <ellipse cx="150" cy="185" rx="25" ry="8"/>
+            </g>
+            <!-- Devotees -->
+            <g fill="#1a0d05" opacity="0.7">
+              <circle cx="80" cy="355" r="8"/><rect x="77" y="363" width="6" height="20"/>
+              <circle cx="220" cy="355" r="8"/><rect x="217" y="363" width="6" height="20"/>
+              <circle cx="55" cy="358" r="7"/><rect x="52" y="365" width="5" height="18"/>
+            </g>
+            <!-- Warm glow -->
+            <ellipse cx="150" cy="360" rx="120" ry="40" fill="#f4845f" opacity="0.15"/>
+          </svg>
+        </div>
+        <div class="card-overlay"></div>
+        <div class="card-content">
+          <p class="card-tag">🛕 Sacred Temple</p>
+          <h3 class="card-title">Baladevjew Temple</h3>
+          <p class="card-desc">The revered seat of Lord Baladev, drawing hundreds of thousands of pilgrims annually. A masterpiece of Kalinga architecture and spiritual heritage.</p>
+          <span class="card-arrow">Discover More →</span>
+        </div>
+      </div>
+
+      <!-- Card 4 — Hukitola Island -->
+      <div class="attraction-card reveal">
+        <div class="card-bg card-bg-4"></div>
+        <div class="card-scene">
+          <svg viewBox="0 0 300 400" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+            <rect width="300" height="400" fill="#061828"/>
+            <!-- Sky gradient -->
+            <defs>
+              <linearGradient id="skyGrad" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#1a3a5a"/>
+                <stop offset="100%" stop-color="#0a2a4a"/>
+              </linearGradient>
+            </defs>
+            <rect width="300" height="250" fill="url(#skyGrad)"/>
+            <!-- Sun on horizon -->
+            <circle cx="150" cy="220" r="35" fill="#f4845f" opacity="0.7"/>
+            <!-- Water -->
+            <rect x="0" y="250" width="300" height="150" fill="#0a2040"/>
+            <!-- Island -->
+            <ellipse cx="150" cy="250" rx="120" ry="25" fill="#143d2e"/>
+            <!-- Palm trees on island -->
+            <g>
+              <rect x="100" y="185" width="5" height="70" fill="#0a2a14"/>
+              <path d="M103,185 Q80,170 70,155 Q90,165 103,185" fill="#1a5a2a"/>
+              <path d="M103,185 Q125,168 135,152 Q118,168 103,185" fill="#1a5a2a"/>
+              <rect x="170" y="190" width="5" height="65" fill="#0a2a14"/>
+              <path d="M173,190 Q152,175 143,160 Q162,172 173,190" fill="#1a5a2a"/>
+              <path d="M173,190 Q194,174 204,158 Q188,173 173,190" fill="#1a5a2a"/>
+            </g>
+            <!-- Water reflection -->
+            <rect x="110" y="260" width="80" height="60" rx="5" fill="#f4845f" opacity="0.08"/>
+          </svg>
+        </div>
+        <div class="card-overlay"></div>
+        <div class="card-content">
+          <p class="card-tag">🏝️ Island Retreat</p>
+          <h3 class="card-title">Hukitola Island</h3>
+          <p class="card-desc">An emerald paradise accessible only by boat — unspoiled beaches, dense mangroves, and the most stunning sunsets in all of coastal Odisha.</p>
+          <span class="card-arrow">Discover More →</span>
+        </div>
+      </div>
+
+      <!-- Card 5 — Dangamal -->
+      <div class="attraction-card reveal">
+        <div class="card-bg card-bg-5"></div>
+        <div class="card-scene">
+          <svg viewBox="0 0 300 400" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+            <rect width="300" height="400" fill="#180805"/>
+            <rect x="0" y="280" width="300" height="120" fill="#0a1520"/>
+            <!-- Watchtower / Forest camp -->
+            <g fill="#2a1005">
+              <!-- Tower -->
+              <rect x="125" y="150" width="50" height="140"/>
+              <rect x="118" y="140" width="64" height="20"/>
+              <rect x="125" y="120" width="10" height="30"/><rect x="165" y="120" width="10" height="30"/>
+              <!-- Roof -->
+              <polygon points="150,80 115,140 185,140" fill="#3a1808"/>
+            </g>
+            <!-- Forest around tower -->
+            <g fill="#1a3a10" opacity="0.8">
+              <circle cx="60" cy="230" r="45"/><circle cx="240" cy="220" r="50"/>
+              <circle cx="30" cy="270" r="35"/><circle cx="270" cy="265" r="38"/>
+              <circle cx="100" cy="260" r="30"/><circle cx="200" cy="255" r="32"/>
+            </g>
+            <!-- Deer silhouette -->
+            <g fill="#0a1808" opacity="0.6">
+              <ellipse cx="200" cy="290" rx="18" ry="10"/>
+              <rect x="196" y="280" width="5" height="20"/>
+              <rect x="207" y="282" width="4" height="18"/>
+              <circle cx="215" cy="278" r="8"/>
+              <!-- Antlers -->
+              <line x1="215" y1="271" x2="210" y2="260" stroke="#0a1808" stroke-width="2"/>
+              <line x1="215" y1="271" x2="220" y2="260" stroke="#0a1808" stroke-width="2"/>
+            </g>
+          </svg>
+        </div>
+        <div class="card-overlay"></div>
+        <div class="card-content">
+          <p class="card-tag">🌿 Eco Camp</p>
+          <h3 class="card-title">Dangamal</h3>
+          <p class="card-desc">The gateway forest camp into Bhitarkanika — jungle walks, watchtowers for wildlife spotting, and the haunting beauty of ancient mangrove trails.</p>
+          <span class="card-arrow">Discover More →</span>
+        </div>
+      </div>
+
+      <!-- Card 6 — Batighar Lighthouse -->
+      <div class="attraction-card reveal">
+        <div class="card-bg card-bg-6"></div>
+        <div class="card-scene">
+          <svg viewBox="0 0 300 400" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+            <rect width="300" height="400" fill="#061520"/>
+            <!-- Night sky with stars -->
+            <g fill="white" opacity="0.5">
+              <circle cx="40" cy="30" r="1.2"/><circle cx="100" cy="50" r="0.8"/>
+              <circle cx="180" cy="25" r="1.1"/><circle cx="250" cy="45" r="0.9"/>
+              <circle cx="70" cy="70" r="1"/><circle cx="220" cy="75" r="0.8"/>
+            </g>
+            <!-- Ocean -->
+            <rect x="0" y="300" width="300" height="100" fill="#0a2535"/>
+            <!-- Lighthouse structure -->
+            <g fill="#142535">
+              <!-- Base -->
+              <rect x="120" y="250" width="60" height="55"/>
+              <!-- Tower -->
+              <path d="M130,250 L140,80 L160,80 L170,250 Z"/>
+              <!-- Light housing -->
+              <rect x="135" y="65" width="30" height="25" rx="3" fill="#1a3545"/>
+              <rect x="133" y="60" width="34" height="10" rx="2" fill="#1a3545"/>
+              <!-- Light beam -->
+              <polygon points="150,73 50,130 150,73 250,130" fill="#f7b731" opacity="0.25"/>
+              <!-- Light glow -->
+              <circle cx="150" cy="73" r="12" fill="#f7b731" opacity="0.5"/>
+            </g>
+            <!-- Ocean waves -->
+            <path d="M0,310 Q75,295 150,310 Q225,325 300,310" fill="none" stroke="#48cae4" stroke-width="1.5" opacity="0.4"/>
+          </svg>
+        </div>
+        <div class="card-overlay"></div>
+        <div class="card-content">
+          <p class="card-tag">💡 Heritage Landmark</p>
+          <h3 class="card-title">Batighar Lighthouse</h3>
+          <p class="card-desc">Standing since the colonial era, this legendary lighthouse guards the meeting of the Dhamara river and Bay of Bengal — a photographer's dream.</p>
+          <span class="card-arrow">Discover More →</span>
+        </div>
+      </div>
+
+      <!-- Card 7 — Rivers & Wetlands -->
+      <div class="attraction-card reveal">
+        <div class="card-bg card-bg-7"></div>
+        <div class="card-scene">
+          <svg viewBox="0 0 300 400" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+            <rect width="300" height="400" fill="#141405"/>
+            <!-- Sunset sky -->
+            <defs>
+              <linearGradient id="sunsetSky" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#1a1005"/>
+                <stop offset="40%" stop-color="#3a2010"/>
+                <stop offset="70%" stop-color="#5a2808"/>
+                <stop offset="100%" stop-color="#0a1020"/>
+              </linearGradient>
+            </defs>
+            <rect width="300" height="220" fill="url(#sunsetSky)"/>
+            <!-- Setting sun -->
+            <circle cx="150" cy="180" r="40" fill="#f4845f" opacity="0.6"/>
+            <circle cx="150" cy="180" r="30" fill="#f7b731" opacity="0.5"/>
+            <!-- River / water -->
+            <rect x="0" y="220" width="300" height="180" fill="#0a1828"/>
+            <!-- Reflections -->
+            <rect x="120" y="220" width="60" height="100" rx="5" fill="#f4845f" opacity="0.1"/>
+            <!-- Boat silhouette -->
+            <g fill="#0a1808" opacity="0.8">
+              <path d="M80,260 Q150,250 220,260 Q200,275 100,275 Z"/>
+              <rect x="145" y="235" width="3" height="25"/>
+              <path d="M148,235 Q165,245 148,255" fill="#1a3010" opacity="0.6"/>
+            </g>
+            <!-- Birds -->
+            <g fill="none" stroke="#f7b731" stroke-width="1.5" opacity="0.5">
+              <path d="M60,160 Q65,154 72,160"/>
+              <path d="M80,145 Q85,139 92,145"/>
+              <path d="M100,158 Q105,152 112,158"/>
+            </g>
+          </svg>
+        </div>
+        <div class="card-overlay"></div>
+        <div class="card-content">
+          <p class="card-tag">🌊 Riverine Landscape</p>
+          <h3 class="card-title">Rivers & Wetlands</h3>
+          <p class="card-desc">Bramhani, Baitarani, and Dhamara rivers create a living labyrinth of waterways. Boat through wetlands at dawn as the mist rises from ancient waters.</p>
+          <span class="card-arrow">Discover More →</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WILDLIFE SECTION -->
+<section id="wildlife">
+  <div class="container">
+    <div class="wildlife-grid">
+      <div class="reveal">
+        <p class="section-eyebrow">Incredible Fauna</p>
+        <h2 class="section-title">Wild <em>Encounters</em></h2>
+        <div class="section-divider"></div>
+        <p class="section-subtitle" style="margin-bottom:3rem">
+          Kendrapara shelters an extraordinary array of wildlife across its mangroves, rivers, beaches, and forests — a living treasury of biodiversity.
+        </p>
+        <div class="wildlife-items">
+          <div class="wildlife-card reveal">
+            <span class="wildlife-icon">🐊</span>
+            <h3>Saltwater Crocodile</h3>
+            <p>3,500+ individuals in Bhitarkanika — India's largest population of Crocodylus porosus</p>
+          </div>
+          <div class="wildlife-card reveal">
+            <span class="wildlife-icon">🐢</span>
+            <h3>Olive Ridley Turtle</h3>
+            <p>Hundreds of thousands nest annually at Gahirmatha in the world's greatest marine spectacle</p>
+          </div>
+          <div class="wildlife-card reveal">
+            <span class="wildlife-icon">🦅</span>
+            <h3>Migratory Birds</h3>
+            <p>Over 215 bird species including open-billed storks, kingfishers, and rare waders</p>
+          </div>
+          <div class="wildlife-card reveal">
+            <span class="wildlife-icon">🐍</span>
+            <h3>King Cobra</h3>
+            <p>The world's longest venomous snake thrives in the deep mangrove corridors</p>
+          </div>
+          <div class="wildlife-card reveal">
+            <span class="wildlife-icon">🦌</span>
+            <h3>Spotted Deer</h3>
+            <p>Large herds of chital and barking deer roam the forest edges of Bhitarkanika</p>
+          </div>
+          <div class="wildlife-card reveal">
+            <span class="wildlife-icon">🐟</span>
+            <h3>Irrawaddy Dolphin</h3>
+            <p>Rare freshwater dolphins are spotted in the estuaries near Dhamara river mouth</p>
+          </div>
+        </div>
+      </div>
+      <div class="wildlife-visual reveal">
+        <div class="wildlife-visual-inner">
+          <!-- Bhitarkanika wildlife SVG -->
+          <svg viewBox="0 0 400 500" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+            <rect width="400" height="500" fill="#061a10"/>
+            <!-- Sky/atmosphere -->
+            <defs>
+              <radialGradient id="atmoGrad" cx="50%" cy="0%" r="70%">
+                <stop offset="0%" stop-color="#0a3a1a" stop-opacity="0.8"/>
+                <stop offset="100%" stop-color="#061020" stop-opacity="1"/>
+              </radialGradient>
+            </defs>
+            <rect width="400" height="300" fill="url(#atmoGrad)"/>
+            <!-- Light rays through canopy -->
+            <g opacity="0.08" fill="#f7b731">
+              <polygon points="200,0 150,250 250,250"/>
+              <polygon points="100,0 60,220 140,220"/>
+              <polygon points="300,0 260,230 340,230"/>
+            </g>
+            <!-- Water at base -->
+            <rect x="0" y="380" width="400" height="120" fill="#071e28"/>
+            <!-- Mangrove roots/trees -->
+            <g stroke="#1a4a20" stroke-width="2" fill="none">
+              <line x1="50" y1="380" x2="50" y2="250"/><line x1="50" y1="300" x2="30" y2="360"/>
+              <line x1="50" y1="300" x2="70" y2="360"/><line x1="50" y1="290" x2="15" y2="370"/>
+              <line x1="350" y1="380" x2="350" y2="240"/><line x1="350" y1="295" x2="330" y2="360"/>
+              <line x1="350" y1="295" x2="370" y2="360"/><line x1="350" y1="285" x2="385" y2="370"/>
+            </g>
+            <!-- Canopy layers -->
+            <g fill="#0d3a18">
+              <ellipse cx="50" cy="220" rx="70" ry="50"/><ellipse cx="160" cy="190" rx="80" ry="58"/>
+              <ellipse cx="280" cy="200" rx="75" ry="55"/><ellipse cx="370" cy="215" rx="60" ry="48"/>
+            </g>
+            <g fill="#143d22">
+              <ellipse cx="50" cy="210" rx="60" ry="42"/><ellipse cx="160" cy="178" rx="68" ry="50"/>
+              <ellipse cx="280" cy="188" rx="64" ry="47"/><ellipse cx="370" cy="205" rx="52" ry="40"/>
+            </g>
+            <!-- Giant crocodile -->
+            <g fill="#0a2a10">
+              <ellipse cx="200" cy="400" rx="100" ry="15"/>
+              <polygon points="300,400 360,390 300,410"/>
+              <circle cx="175" cy="395" r="5" fill="#2d6a4f"/>
+              <circle cx="225" cy="393" r="5" fill="#2d6a4f"/>
+              <!-- Scales texture -->
+              <g stroke="#143d20" stroke-width="0.5" fill="none">
+                <path d="M140,398 Q160,394 180,398"/><path d="M155,404 Q175,400 195,404"/>
+                <path d="M170,398 Q190,394 210,398"/>
+              </g>
+            </g>
+            <!-- Stork birds -->
+            <g>
+              <g fill="#e8d5b7" opacity="0.6">
+                <circle cx="200" cy="240" r="6"/>
+                <rect x="198" y="246" width="4" height="35"/>
+                <rect x="194" y="272" width="12" height="3"/>
+                <rect x="196" y="248" width="3" height="18" transform="rotate(-20,196,248)"/>
+                <rect x="203" y="248" width="3" height="20" transform="rotate(20,203,248)"/>
+              </g>
+              <g fill="#e8d5b7" opacity="0.4">
+                <circle cx="230" cy="245" r="5"/>
+                <rect x="228" y="250" width="4" height="30"/>
+                <rect x="224" y="272" width="11" height="3"/>
+              </g>
+            </g>
+            <!-- Water ripples -->
+            <g stroke="#48cae4" stroke-width="0.8" fill="none" opacity="0.25">
+              <ellipse cx="200" cy="420" rx="60" ry="8"/>
+              <ellipse cx="200" cy="430" rx="80" ry="10"/>
+              <ellipse cx="200" cy="443" rx="50" ry="6"/>
+            </g>
+          </svg>
+          <div class="wildlife-label">
+            <div class="species">Crocodylus porosus</div>
+            <div class="count">3,500+ individuals · Bhitarkanika</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CULTURE SECTION -->
+<section id="culture">
+  <div class="container">
+    <div class="culture-header">
+      <div class="reveal">
+        <p class="section-eyebrow">Festivals & Heritage</p>
+        <h2 class="section-title">Living <em>Culture</em></h2>
+        <div class="section-divider"></div>
+        <p class="section-subtitle">Centuries of tradition woven into the fabric of everyday life</p>
+      </div>
+      <a href="#plan" class="btn-outline reveal" style="white-space:nowrap">See All Events</a>
+    </div>
+    <div class="festivals-scroll">
+      <div class="festival-card reveal">
+        <div class="festival-bg festival-bg-1"></div>
+        <div class="festival-overlay"></div>
+        <!-- Festival SVG decoration -->
+        <svg style="position:absolute;inset:0;width:100%;height:100%;opacity:0.2" viewBox="0 0 200 300" xmlns="http://www.w3.org/2000/svg">
+          <g fill="none" stroke="#e8c97a" stroke-width="1">
+            <circle cx="100" cy="100" r="60"/><circle cx="100" cy="100" r="45"/>
+            <circle cx="100" cy="100" r="30"/>
+          </g>
+          <g fill="#e8c97a" opacity="0.5">
+            <polygon points="100,20 105,40 100,35 95,40"/>
+            <polygon points="100,180 105,160 100,165 95,160"/>
+            <polygon points="20,100 40,95 35,100 40,105"/>
+            <polygon points="180,100 160,95 165,100 160,105"/>
+          </g>
+        </svg>
+        <div class="festival-content">
+          <p class="festival-month">January · February</p>
+          <h3 class="festival-name">Baladevjew Rath Yatra</h3>
+          <p class="festival-desc">Grand chariot procession with hundreds of thousands of devotees</p>
+        </div>
+      </div>
+      <div class="festival-card reveal">
+        <div class="festival-bg festival-bg-2"></div>
+        <div class="festival-overlay"></div>
+        <svg style="position:absolute;inset:0;width:100%;height:100%;opacity:0.15" viewBox="0 0 200 300" xmlns="http://www.w3.org/2000/svg">
+          <g fill="#f7b731">
+            <polygon points="100,30 115,75 162,75 125,100 140,145 100,120 60,145 75,100 38,75 85,75"/>
+          </g>
+        </svg>
+        <div class="festival-content">
+          <p class="festival-month">October · November</p>
+          <h3 class="festival-name">Dussehra & Diwali</h3>
+          <p class="festival-desc">Rivers of light, effigies, and the air thick with incense and song</p>
+        </div>
+      </div>
+      <div class="festival-card reveal">
+        <div class="festival-bg festival-bg-3"></div>
+        <div class="festival-overlay"></div>
+        <svg style="position:absolute;inset:0;width:100%;height:100%;opacity:0.15" viewBox="0 0 200 300" xmlns="http://www.w3.org/2000/svg">
+          <!-- Turtle pattern -->
+          <ellipse cx="100" cy="140" rx="60" ry="45" fill="none" stroke="#52b788" stroke-width="2"/>
+          <g stroke="#52b788" stroke-width="1.5" fill="none">
+            <path d="M55,125 Q100,105 145,125"/><path d="M50,150 Q100,130 150,150"/>
+            <path d="M55,165 Q100,145 145,165"/>
+          </g>
+          <circle cx="100" cy="100" r="15" fill="none" stroke="#52b788" stroke-width="1.5"/>
+        </svg>
+        <div class="festival-content">
+          <p class="festival-month">February · March</p>
+          <h3 class="festival-name">Turtle Festival</h3>
+          <p class="festival-desc">Celebrating the mass nesting of Olive Ridley turtles at Gahirmatha</p>
+        </div>
+      </div>
+      <div class="festival-card reveal">
+        <div class="festival-bg festival-bg-4"></div>
+        <div class="festival-overlay"></div>
+        <svg style="position:absolute;inset:0;width:100%;height:100%;opacity:0.15" viewBox="0 0 200 300" xmlns="http://www.w3.org/2000/svg">
+          <!-- Boat pattern -->
+          <path d="M30,180 Q100,160 170,180 Q150,200 50,200 Z" fill="none" stroke="#48cae4" stroke-width="2"/>
+          <line x1="100" y1="160" x2="100" y2="100" stroke="#48cae4" stroke-width="1.5"/>
+          <path d="M100,100 Q130,115 100,130" fill="#48cae4" opacity="0.5"/>
+          <!-- Waves -->
+          <path d="M20,210 Q55,200 90,210 Q125,220 160,210" fill="none" stroke="#48cae4" stroke-width="1" opacity="0.6"/>
+        </svg>
+        <div class="festival-content">
+          <p class="festival-month">August · September</p>
+          <h3 class="festival-name">Boita Bandana</h3>
+          <p class="festival-desc">Ancient boat-floating festival on rivers, honoring Odisha's maritime legacy</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOD SECTION -->
+<section id="food">
+  <div class="container">
+    <div class="food-intro">
+      <div class="reveal">
+        <p class="section-eyebrow">Coastal Cuisine</p>
+        <h2 class="section-title">Taste the <em>Ocean</em></h2>
+        <div class="section-divider"></div>
+        <p class="section-subtitle" style="margin-bottom:2rem">
+          Kendrapara's cuisine is a love letter to the sea. Fresh-caught prawns, crabs, and fish prepared with mustard, turmeric, and coconut in recipes passed through generations.
+        </p>
+        <p style="font-size:0.85rem;color:rgba(248,246,242,0.4);line-height:1.9">
+          From the smoky chai stalls along the river ghats to the simple perfection of machha jhola over steamed rice, every meal here carries the memory of the water it came from. This is food with a soul.
+        </p>
+      </div>
+      <div class="food-visual reveal">
+        <svg viewBox="0 0 300 300" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+          <!-- Decorative mandala-like food art -->
+          <defs>
+            <radialGradient id="foodGrad" cx="50%" cy="50%" r="50%">
+              <stop offset="0%" stop-color="#3a1508"/>
+              <stop offset="100%" stop-color="#0a0a05"/>
+            </radialGradient>
+          </defs>
+          <circle cx="150" cy="150" r="150" fill="url(#foodGrad)"/>
+          <!-- Plate -->
+          <circle cx="150" cy="150" r="110" fill="none" stroke="#c9a84c" stroke-width="1.5" opacity="0.4"/>
+          <circle cx="150" cy="150" r="90" fill="none" stroke="#c9a84c" stroke-width="0.8" opacity="0.2"/>
+          <!-- Prawn/shrimp silhouette -->
+          <path d="M150,80 Q180,100 185,130 Q188,155 175,170 Q165,185 150,185 Q135,185 125,170 Q112,155 115,130 Q120,100 150,80 Z" fill="#f4845f" opacity="0.6"/>
+          <!-- Fish silhouette -->
+          <ellipse cx="150" cy="150" rx="40" ry="20" fill="#48cae4" opacity="0.25"/>
+          <polygon points="190,150 210,140 210,160" fill="#48cae4" opacity="0.25"/>
+          <!-- Spice dots around -->
+          <g fill="#f7b731" opacity="0.6">
+            <circle cx="150" cy="60" r="4"/><circle cx="200" cy="80" r="3"/>
+            <circle cx="225" cy="130" r="4"/><circle cx="215" cy="185" r="3"/>
+            <circle cx="175" cy="220" r="4"/><circle cx="125" cy="220" r="3"/>
+            <circle cx="85" cy="185" r="4"/><circle cx="75" cy="130" r="3"/>
+            <circle cx="100" cy="80" r="4"/><circle cx="150" cy="240" r="3"/>
+          </g>
+        </svg>
+      </div>
+    </div>
+    <div class="food-items">
+      <div class="food-item reveal"><span class="food-emoji">🦐</span><div class="food-name">Chingudi Jhola</div><div class="food-detail">Prawn curry with mustard &amp; coconut</div></div>
+      <div class="food-item reveal"><span class="food-emoji">🦀</span><div class="food-name">Kankada Rai</div><div class="food-detail">Crab in spiced mustard sauce</div></div>
+      <div class="food-item reveal"><span class="food-emoji">🐟</span><div class="food-name">Machha Jhola</div><div class="food-detail">River fish in turmeric gravy</div></div>
+      <div class="food-item reveal"><span class="food-emoji">🫙</span><div class="food-name">Pakhala Bhata</div><div class="food-detail">Fermented rice — a summer staple</div></div>
+      <div class="food-item reveal"><span class="food-emoji">🍃</span><div class="food-name">Saga Bhaja</div><div class="food-detail">Crispy fried greens from riverside farms</div></div>
+      <div class="food-item reveal"><span class="food-emoji">🍮</span><div class="food-name">Chhena Poda</div><div class="food-detail">Odisha's legendary baked cottage cheese dessert</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ECO SECTION -->
+<section id="eco">
+  <div class="container">
+    <div class="eco-banner reveal">
+      <p class="section-eyebrow" style="text-align:center;margin-bottom:1.5rem">Our Responsibility</p>
+      <h2>Travel with <em style="font-style:italic;color:var(--green-light)">Purpose</em></h2>
+      <p>
+        Kendrapara's ecosystems are among the most sensitive and precious on Earth. We invite you to experience their magic responsibly — supporting local communities, minimizing your footprint, and contributing to the conservation of species that have nowhere else to go.
+      </p>
+      <div class="eco-pills">
+        <span class="eco-pill">🌿 Leave No Trace</span>
+        <span class="eco-pill">🛶 Guided Boat Tours Only</span>
+        <span class="eco-pill">🐢 Turtle Nesting Season Protocols</span>
+        <span class="eco-pill">🏘️ Support Local Guides</span>
+        <span class="eco-pill">📷 Responsible Photography</span>
+        <span class="eco-pill">♻️ Plastic-Free Zones</span>
+        <span class="eco-pill">🌊 Mangrove Planting Programs</span>
+      </div>
+      <a href="#plan" class="btn-primary"><span>✦ Plan an Eco-Friendly Visit</span></a>
+    </div>
+  </div>
+</section>
+
+<!-- GALLERY SECTION -->
+<section id="gallery">
+  <div class="container">
+    <div class="gallery-header reveal">
+      <p class="section-eyebrow">Visual Stories</p>
+      <h2 class="section-title">Through the <em>Lens</em></h2>
+      <p class="section-subtitle" style="margin:0 auto">Moments captured at the edge of wilderness and civilization</p>
+    </div>
+    <div class="gallery-grid">
+      <div class="gallery-item wide tall reveal">
+        <div class="gallery-bg gb-1">
+          <svg width="100%" height="100%" viewBox="0 0 600 440" xmlns="http://www.w3.org/2000/svg">
+            <rect width="600" height="440" fill="#0d3b2e"/>
+            <!-- Aerial mangrove view -->
+            <g opacity="0.7">
+              <ellipse cx="100" cy="100" rx="80" ry="60" fill="#1a6b3f"/>
+              <ellipse cx="250" cy="80" rx="100" ry="70" fill="#143d22"/>
+              <ellipse cx="420" cy="110" rx="90" ry="65" fill="#1a5a2a"/>
+              <ellipse cx="550" cy="90" rx="70" ry="55" fill="#0d3b1e"/>
+              <ellipse cx="80" cy="220" rx="70" ry="55" fill="#143d22"/>
+              <ellipse cx="200" cy="240" rx="95" ry="68" fill="#1a6b3f"/>
+              <ellipse cx="380" cy="230" rx="85" ry="62" fill="#0d3b1e"/>
+              <ellipse cx="530" cy="220" rx="80" ry="60" fill="#1a5a2a"/>
+            </g>
+            <!-- River channels (aerial) -->
+            <path d="M0,160 Q150,150 300,170 Q450,190 600,160" fill="none" stroke="#48cae4" stroke-width="15" opacity="0.6"/>
+            <path d="M200,440 Q220,300 240,160" fill="none" stroke="#48cae4" stroke-width="12" opacity="0.5"/>
+          </svg>
+        </div>
+        <div class="gallery-overlay"></div>
+        <div class="gallery-caption">Aerial View · Bhitarkanika</div>
+      </div>
+      <div class="gallery-item reveal">
+        <div class="gallery-bg gb-2">
+          <svg width="100%" height="100%" viewBox="0 0 300 220" xmlns="http://www.w3.org/2000/svg">
+            <rect width="300" height="220" fill="#071525"/>
+            <rect x="0" y="140" width="300" height="80" fill="#0a2540"/>
+            <circle cx="150" cy="120" r="50" fill="#f4845f" opacity="0.5"/>
+            <circle cx="150" cy="120" r="35" fill="#f7b731" opacity="0.4"/>
+            <rect x="80" y="155" width="140" height="50" rx="5" fill="#f4845f" opacity="0.15"/>
+            <path d="M0,145 Q75,130 150,145 Q225,160 300,145" fill="none" stroke="#48cae4" stroke-width="2" opacity="0.4"/>
+          </svg>
+        </div>
+        <div class="gallery-overlay"></div>
+        <div class="gallery-caption">Sunset · River Mouth</div>
+      </div>
+      <div class="gallery-item reveal">
+        <div class="gallery-bg gb-3">
+          <svg width="100%" height="100%" viewBox="0 0 300 220" xmlns="http://www.w3.org/2000/svg">
+            <rect width="300" height="220" fill="#1a0d05"/>
+            <polygon points="150,20 110,140 190,140" fill="#3a1808"/>
+            <polygon points="150,50 120,140 180,140" fill="#4a2210"/>
+            <rect x="125" y="140" width="50" height="80" fill="#2a1408"/>
+            <ellipse cx="150" cy="190" rx="90" ry="30" fill="#f7b731" opacity="0.1"/>
+            <g fill="rgba(201,168,76,0.3)">
+              <rect x="135" y="75" width="6" height="20"/><rect x="160" y="85" width="6" height="20"/>
+              <rect x="148" y="65" width="6" height="18"/>
+            </g>
+          </svg>
+        </div>
+        <div class="gallery-overlay"></div>
+        <div class="gallery-caption">Baladevjew Temple · Kendrapara</div>
+      </div>
+      <div class="gallery-item tall reveal">
+        <div class="gallery-bg gb-4">
+          <svg width="100%" height="100%" viewBox="0 0 300 440" xmlns="http://www.w3.org/2000/svg">
+            <rect width="300" height="440" fill="#1a0a2a"/>
+            <g fill="white" opacity="0.4">
+              <circle cx="60" cy="50" r="1.2"/><circle cx="140" cy="30" r="1"/><circle cx="220" cy="60" r="1.3"/>
+              <circle cx="40" cy="100" r="0.8"/><circle cx="260" cy="80" r="1.1"/><circle cx="160" cy="90" r="0.9"/>
+            </g>
+            <g opacity="0.7">
+              <ellipse cx="150" cy="380" rx="80" ry="30" fill="#143d22"/>
+              <rect x="70" y="220" width="20" height="170" fill="#0a2a14"/>
+              <ellipse cx="80" cy="220" rx="40" ry="55" fill="#1a5a2a"/>
+              <rect x="195" y="240" width="18" height="150" fill="#0a2a14"/>
+              <ellipse cx="204" cy="240" rx="36" ry="50" fill="#143d22"/>
+            </g>
+            <g fill="white" opacity="0.6">
+              <ellipse cx="100" cy="350" rx="25" ry="15"/>
+              <polygon points="140,345 170,335 170,355"/>
+              <ellipse cx="200" cy="355" rx="20" ry="12"/>
+            </g>
+          </svg>
+        </div>
+        <div class="gallery-overlay"></div>
+        <div class="gallery-caption">Nesting Night · Gahirmatha</div>
+      </div>
+      <div class="gallery-item reveal">
+        <div class="gallery-bg gb-5">
+          <svg width="100%" height="100%" viewBox="0 0 300 220" xmlns="http://www.w3.org/2000/svg">
+            <rect width="300" height="220" fill="#082028"/>
+            <rect x="0" y="140" width="300" height="80" fill="#0a3040"/>
+            <g stroke="#48cae4" stroke-width="1.5" fill="none" opacity="0.5">
+              <path d="M0,150 Q75,138 150,150 Q225,162 300,150"/>
+              <path d="M0,162 Q75,150 150,162 Q225,174 300,162"/>
+              <path d="M0,174 Q75,162 150,174 Q225,186 300,174"/>
+            </g>
+            <path d="M120,20 Q130,0 150,20 Q170,0 180,20 L190,140 L110,140Z" fill="#e8d5b7" opacity="0.3"/>
+            <circle cx="150" cy="30" r="12" fill="#f7b731" opacity="0.6"/>
+          </svg>
+        </div>
+        <div class="gallery-overlay"></div>
+        <div class="gallery-caption">Dawn Boat · Dhamara</div>
+      </div>
+      <div class="gallery-item wide reveal">
+        <div class="gallery-bg gb-6">
+          <svg width="100%" height="100%" viewBox="0 0 600 220" xmlns="http://www.w3.org/2000/svg">
+            <rect width="600" height="220" fill="#1a2a08"/>
+            <g fill="#2a4a10" opacity="0.8">
+              <ellipse cx="50" cy="150" rx="60" ry="80"/><ellipse cx="130" cy="140" rx="70" ry="90"/>
+              <ellipse cx="220" cy="155" rx="55" ry="75"/><ellipse cx="310" cy="145" rx="65" ry="85"/>
+              <ellipse cx="400" cy="150" rx="60" ry="80"/><ellipse cx="490" cy="140" rx="70" ry="90"/>
+              <ellipse cx="570" cy="155" rx="55" ry="75"/>
+            </g>
+            <rect x="0" y="190" width="600" height="30" fill="#0a1808"/>
+            <!-- Birds in V formation -->
+            <g fill="none" stroke="#f7b731" stroke-width="2" opacity="0.7">
+              <path d="M270,60 Q280,52 292,60"/><path d="M295,55 Q305,47 317,55"/>
+              <path d="M248,65 Q258,57 270,65"/>
+            </g>
+          </svg>
+        </div>
+        <div class="gallery-overlay"></div>
+        <div class="gallery-caption">Bird Migration · Bhitarkanika</div>
+      </div>
+      <div class="gallery-item reveal">
+        <div class="gallery-bg gb-7">
+          <svg width="100%" height="100%" viewBox="0 0 300 220" xmlns="http://www.w3.org/2000/svg">
+            <rect width="300" height="220" fill="#180808"/>
+            <rect x="0" y="150" width="300" height="70" fill="#0a1525"/>
+            <ellipse cx="150" cy="145" rx="130" ry="40" fill="#3a0a0a" opacity="0.8"/>
+            <!-- Festival lights / lamps -->
+            <g fill="#f7b731" opacity="0.8">
+              <circle cx="60" cy="130" r="6"/><circle cx="100" cy="120" r="8"/>
+              <circle cx="150" cy="115" r="10"/><circle cx="200" cy="120" r="8"/>
+              <circle cx="240" cy="130" r="6"/>
+            </g>
+            <g fill="#f4845f" opacity="0.5">
+              <circle cx="80" cy="145" r="5"/><circle cx="130" cy="138" r="6"/>
+              <circle cx="180" cy="140" r="5"/><circle cx="225" cy="148" r="4"/>
+            </g>
+            <path d="M0,160 Q75,148 150,160 Q225,172 300,160" fill="none" stroke="#f7b731" stroke-width="1.5" opacity="0.4"/>
+          </svg>
+        </div>
+        <div class="gallery-overlay"></div>
+        <div class="gallery-caption">Rath Yatra · Festivities</div>
+      </div>
+      <div class="gallery-item reveal">
+        <div class="gallery-bg gb-8">
+          <svg width="100%" height="100%" viewBox="0 0 300 220" xmlns="http://www.w3.org/2000/svg">
+            <rect width="300" height="220" fill="#082010"/>
+            <rect x="0" y="150" width="300" height="70" fill="#0a1820"/>
+            <!-- Crocodile close-up -->
+            <ellipse cx="150" cy="160" rx="130" ry="20" fill="#0a2a10"/>
+            <polygon points="280,160 320,150 280,170" fill="#0a2a10"/>
+            <g fill="#143d1a">
+              <!-- Scales -->
+              <ellipse cx="100" cy="158" rx="15" ry="8"/><ellipse cx="130" cy="155" rx="15" ry="8"/>
+              <ellipse cx="160" cy="154" rx="15" ry="8"/><ellipse cx="190" cy="155" rx="15" ry="8"/>
+              <ellipse cx="220" cy="158" rx="15" ry="8"/>
+            </g>
+            <circle cx="120" cy="152" r="6" fill="#2d6a4f"/>
+            <circle cx="180" cy="152" r="6" fill="#2d6a4f"/>
+            <!-- Water ripples -->
+            <g stroke="#48cae4" stroke-width="0.8" fill="none" opacity="0.3">
+              <ellipse cx="150" cy="180" rx="100" ry="12"/>
+              <ellipse cx="150" cy="194" rx="80" ry="9"/>
+            </g>
+          </svg>
+        </div>
+        <div class="gallery-overlay"></div>
+        <div class="gallery-caption">Saltwater Croc · Eye Level</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- QUOTE SECTION -->
+<section id="quote">
+  <div class="container">
+    <blockquote class="big-quote reveal">
+      "In Kendrapara, the rivers don't just flow through the land — they flow through its people, its temples, its stories. Here, you don't visit a place. You become part of it."
+    </blockquote>
+    <p class="quote-author reveal">— A Traveler's Reflection on Coastal Odisha</p>
+  </div>
+</section>
+
+<!-- PLAN SECTION -->
+<section id="plan">
+  <div class="container">
+    <div class="plan-grid">
+      <div class="reveal">
+        <p class="section-eyebrow">Visitor Guide</p>
+        <h2 class="section-title">Plan Your <em>Journey</em></h2>
+        <div class="section-divider"></div>
+        <p class="section-subtitle" style="margin-bottom:3rem">
+          Everything you need to know before you arrive in this extraordinary corner of Odisha.
+        </p>
+        <div class="plan-items">
+          <div class="plan-item reveal">
+            <div class="plan-num">01</div>
+            <div>
+              <h3>Best Time to Visit</h3>
+              <p>October to March for wildlife and weather. February for the Olive Ridley turtle nesting season at Gahirmatha. Monsoon (June–Sept) transforms the mangroves but limits boat access.</p>
+            </div>
+          </div>
+          <div class="plan-item reveal">
+            <div class="plan-num">02</div>
+            <div>
+              <h3>Getting There</h3>
+              <p>Nearest airport: Bhubaneswar (150 km). Regular buses and trains connect Kendrapara to Cuttack and Bhubaneswar. State highways are well-maintained.</p>
+            </div>
+          </div>
+          <div class="plan-item reveal">
+            <div class="plan-num">03</div>
+            <div>
+              <h3>Bhitarkanika Entry</h3>
+              <p>Entry permits required. Boat tours depart from Dangamal and Khola jetties. Early morning departures (6 AM) offer the best wildlife sightings.</p>
+            </div>
+          </div>
+          <div class="plan-item reveal">
+            <div class="plan-num">04</div>
+            <div>
+              <h3>Where to Stay</h3>
+              <p>Eco-resorts near Dangamal, guesthouses in Kendrapara town, and forest rest houses inside the sanctuary for an immersive overnight experience.</p>
+            </div>
+          </div>
+          <div class="plan-item reveal">
+            <div class="plan-num">05</div>
+            <div>
+              <h3>Photography Tips</h3>
+              <p>Golden hour at river mouths is magical. Carry a 400mm lens for wildlife. Boat tours at dawn in still water create mirror-like reflections of mangroves.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="reveal">
+        <div class="plan-cta-box">
+          <h3>How to <em style="font-style:italic;color:var(--cyan-soft)">Reach</em> Kendrapara</h3>
+          <p>Multiple comfortable routes connect Kendrapara to major cities in Odisha and beyond</p>
+          <div class="reach-tags">
+            <div class="reach-tag"><span class="icon">✈️</span><div><strong>By Air</strong> — Bhubaneswar Airport (BBI), then road via NH-53, ~2.5 hours</div></div>
+            <div class="reach-tag"><span class="icon">🚂</span><div><strong>By Train</strong> — Kendrapara Road Station on the Cuttack–Paradip line; well connected to all major cities</div></div>
+            <div class="reach-tag"><span class="icon">🚌</span><div><strong>By Bus</strong> — OSRTC buses from Bhubaneswar (3 hrs) and Cuttack (1.5 hrs) to Kendrapara town</div></div>
+            <div class="reach-tag"><span class="icon">🚗</span><div><strong>By Car</strong> — NH-53 from Bhubaneswar via Cuttack. Scenic drives along the Mahanadi Delta</div></div>
+            <div class="reach-tag"><span class="icon">🛶</span><div><strong>By Boat</strong> — Scenic river routes to Bhitarkanika from Dangamal (18 km from Rajnagar)</div></div>
+          </div>
+          <a href="https://odishatourism.gov.in" target="_blank" rel="noopener" class="btn-primary" style="display:inline-block"><span>✦ Visit Odisha Tourism Portal</span></a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <span class="logo">Kendra<span>para</span></span>
+        <p>A premium tourism initiative celebrating the natural wonders, cultural heritage, and living traditions of Kendrapara district, Odisha, India.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Explore</h4>
+        <ul>
+          <li><a href="#about">About</a></li>
+          <li><a href="#attractions">Attractions</a></li>
+          <li><a href="#wildlife">Wildlife</a></li>
+          <li><a href="#culture">Culture</a></li>
+          <li><a href="#food">Cuisine</a></li>
+          <li><a href="#gallery">Gallery</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Plan</h4>
+        <ul>
+          <li><a href="#plan">How to Reach</a></li>
+          <li><a href="#plan">Best Time</a></li>
+          <li><a href="#plan">Eco Tourism</a></li>
+          <li><a href="#plan">Photography</a></li>
+          <li><a href="#plan">Accommodation</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Connect</h4>
+        <ul>
+          <li><a href="https://odishatourism.gov.in" target="_blank">Odisha Tourism</a></li>
+          <li><a href="https://forest.odisha.gov.in" target="_blank">Forest Department</a></li>
+          <li><a href="https://bhitarkanika.org" target="_blank">Bhitarkanika Park</a></li>
+          <li><a href="#">Contact Us</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2025 Kendrapara Tourism. Crafted with love for <a href="#">Odisha</a>. All rights reserved.</p>
+      <div class="social-links">
+        <a href="#" class="social-link" title="Instagram">✦</a>
+        <a href="#" class="social-link" title="Facebook">fb</a>
+        <a href="#" class="social-link" title="Twitter">tw</a>
+        <a href="#" class="social-link" title="YouTube">▶</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // CUSTOM CURSOR
+  const cursor = document.getElementById('cursor');
+  const ring = document.getElementById('cursorRing');
+  let mouseX = 0, mouseY = 0, ringX = 0, ringY = 0;
+
+  document.addEventListener('mousemove', (e) => {
+    mouseX = e.clientX;
+    mouseY = e.clientY;
+    cursor.style.transform = `translate(${mouseX - 6}px, ${mouseY - 6}px)`;
+  });
+
+  // Smooth ring follow
+  function animateRing() {
+    ringX += (mouseX - ringX - 20) * 0.12;
+    ringY += (mouseY - ringY - 20) * 0.12;
+    ring.style.transform = `translate(${ringX}px, ${ringY}px)`;
+    requestAnimationFrame(animateRing);
+  }
+  animateRing();
+
+  // Hover effects
+  document.querySelectorAll('a, button, .attraction-card, .wildlife-card, .festival-card, .food-item, .plan-item, .gallery-item').forEach(el => {
+    el.addEventListener('mouseenter', () => { cursor.classList.add('hover'); ring.classList.add('hover'); });
+    el.addEventListener('mouseleave', () => { cursor.classList.remove('hover'); ring.classList.remove('hover'); });
+  });
+
+  // NAVBAR SCROLL
+  const navbar = document.getElementById('navbar');
+  window.addEventListener('scroll', () => {
+    navbar.classList.toggle('scrolled', window.scrollY > 50);
+  });
+
+  // MOBILE MENU
+  function openMobileMenu() {
+    document.getElementById('mobileMenu').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeMobileMenu() {
+    document.getElementById('mobileMenu').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+  document.getElementById('menuClose').addEventListener('click', closeMobileMenu);
+
+  // PARTICLES
+  const particlesContainer = document.getElementById('particles');
+  for (let i = 0; i < 25; i++) {
+    const p = document.createElement('div');
+    p.className = 'particle';
+    const size = Math.random() * 4 + 1;
+    p.style.cssText = `
+      width: ${size}px;
+      height: ${size}px;
+      left: ${Math.random() * 100}%;
+      animation-delay: ${Math.random() * 12}s;
+      animation-duration: ${10 + Math.random() * 8}s;
+      background: ${Math.random() > 0.5 ? 'var(--cyan)' : 'var(--green-light)'};
+    `;
+    particlesContainer.appendChild(p);
+  }
+
+  // SCROLL REVEAL
+  const revealEls = document.querySelectorAll('.reveal, .reveal-left');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry, i) => {
+      if (entry.isIntersecting) {
+        // Stagger siblings
+        const siblings = entry.target.parentElement.querySelectorAll('.reveal, .reveal-left');
+        let delay = 0;
+        siblings.forEach((sib, idx) => {
+          if (sib === entry.target) delay = idx * 80;
+        });
+        setTimeout(() => {
+          entry.target.classList.add('visible');
+        }, delay);
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.12, rootMargin: '0px 0px -60px 0px' });
+
+  revealEls.forEach(el => observer.observe(el));
+
+  // PARALLAX on hero
+  window.addEventListener('scroll', () => {
+    const scrollY = window.scrollY;
+    const heroBg = document.querySelector('.hero-bg');
+    if (heroBg && scrollY < window.innerHeight) {
+      heroBg.style.transform = `translateY(${scrollY * 0.4}px)`;
+    }
+    const heroContent = document.querySelector('.hero-content');
+    if (heroContent && scrollY < window.innerHeight) {
+      heroContent.style.transform = `translateY(${scrollY * 0.2}px)`;
+      heroContent.style.opacity = 1 - scrollY / 600;
+    }
+  });
+
+  // COUNTER ANIMATION
+  function animateCounter(el, target, suffix = '') {
+    let start = 0;
+    const duration = 2000;
+    const step = target / (duration / 16);
+    const timer = setInterval(() => {
+      start += step;
+      if (start >= target) { start = target; clearInterval(timer); }
+      el.textContent = Math.floor(start).toLocaleString() + suffix;
+    }, 16);
+  }
+
+  // Animate stats when visible
+  const statsObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const nums = entry.target.querySelectorAll('.stat-number');
+        const values = [672, 1400, 3500];
+        const suffixes = [' km²', '+', '+'];
+        nums.forEach((num, i) => animateCounter(num, values[i], suffixes[i]));
+        statsObserver.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.5 });
+  const statsEl = document.querySelector('.hero-stats');
+  if (statsEl) statsObserver.observe(statsEl);
+
+  // Hide cursor on mobile
+  if ('ontouchstart' in window) {
+    cursor.style.display = 'none';
+    ring.style.display = 'none';
+    document.body.style.cursor = 'auto';
+  }
+</script>
+</body>
+</html>
